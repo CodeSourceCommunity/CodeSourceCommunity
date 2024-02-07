@@ -15,12 +15,14 @@ import jakarta.persistence.Table;
 import java.util.ArrayList;
 import java.util.List;
 import lombok.AllArgsConstructor;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
+@Getter
 @Setter
 @Table(name = "comments")
 public class Comment {
@@ -43,5 +45,9 @@ public class Comment {
     @OneToMany(mappedBy = "comment")
     private List<ReComment> reComments = new ArrayList<>();
 
-
+    public Comment(String contents, Member member, Board board) {
+        this.contents = contents;
+        this.member = member;
+        this.board = board;
+    }
 }
