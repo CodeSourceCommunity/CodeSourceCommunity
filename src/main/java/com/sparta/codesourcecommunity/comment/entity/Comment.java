@@ -41,7 +41,6 @@ public class Comment {
     private Board board;
 
     @OneToMany(mappedBy = "comment")
-    @JoinColumn(name = "commentId")
     private List<ReComment> reComments = new ArrayList<>();
 
 

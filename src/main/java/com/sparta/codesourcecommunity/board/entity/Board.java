@@ -40,11 +40,9 @@ public class Board {
     private Member member;
 
     @OneToMany(mappedBy = "board")
-    @JoinColumn(name = "boardId")
     private List<Comment> comment = new ArrayList<>();
 
     @OneToMany(mappedBy = "board")
-    @JoinColumn(name = "boardId")
     private List<Like> like = new ArrayList<>();
 
 

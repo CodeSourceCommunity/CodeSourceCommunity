@@ -16,13 +16,13 @@ import jakarta.persistence.Table;
 import java.util.ArrayList;
 import java.util.List;
 import lombok.AllArgsConstructor;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
-@AllArgsConstructor
+@Getter
 @NoArgsConstructor
-@Setter
 @Table(name = "members")
 public class Member {
 
@@ -39,18 +39,26 @@ public class Member {
     @Column
     private String introduce;
 
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
-    @JoinColumn(name = "memberId")
+    @OneToMany(mappedBy = "member",cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Board> board = new ArrayList<>();
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
-    @JoinColumn(name = "memberId")
+    @OneToMany(mappedBy = "member",cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Comment> comment = new ArrayList<>();
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
-    @JoinColumn(name = "memberId")
+    @OneToMany(mappedBy = "member",cascade = CascadeType.ALL, orphanRemoval = true)
     private List<ReComment> reComment = new ArrayList<>();
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
-    @JoinColumn(name = "memberId")
+    @OneToMany(mappedBy = "member",cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Like> like = new ArrayList<>();
 
 
+    public Member(String email, String nickname, String password) {
+        this.email = email;
+        this.nickname = nickname;
+        this.password = password;
+    }
+
+    public Member(String email, String nickname, String password, String introduce){
+        this.email = email;
+        this.nickname = nickname;
+        this.password = password;
+        this.introduce = introduce;
+    }
 }
