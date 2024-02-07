@@ -9,6 +9,8 @@ import com.sparta.codesourcecommunity.comment.repository.CommentRepository;
 import com.sparta.codesourcecommunity.member.entity.Member;
 import com.sparta.codesourcecommunity.member.repository.MemberRepository;
 import com.sparta.codesourcecommunity.security.MemberDetailsImpl;
+import java.util.ArrayList;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -28,5 +30,16 @@ public class CommentService {
 
         return new CommentResponseDto(saveComment);
 
+    }
+
+    public List<CommentResponseDto> readComment(Long boardId) {
+        List<Comment> commentList= commentRepository.findAllByBoard_BoardId(boardId);
+        List<CommentResponseDto> commentResponseDtos = new ArrayList<>();
+
+        for (Comment comment : commentList) {
+            commentResponseDtos.add(new CommentResponseDto(comment));
+        }
+
+        return commentResponseDtos;
     }
 }

@@ -6,6 +6,7 @@ import com.sparta.codesourcecommunity.comment.service.CommentService;
 import com.sparta.codesourcecommunity.member.entity.Member;
 import com.sparta.codesourcecommunity.security.MemberDetailsImpl;
 import jakarta.validation.Valid;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -35,9 +36,9 @@ public class CommentController {
     }
 
     @GetMapping("")
-    public ResponseEntity<?> readComment() {
+    public List<CommentResponseDto> readComment(@PathVariable Long boardId) {
 
-        return null;
+        return commentService.readComment(boardId);
     }
 
     @PatchMapping("/{commentId}")
