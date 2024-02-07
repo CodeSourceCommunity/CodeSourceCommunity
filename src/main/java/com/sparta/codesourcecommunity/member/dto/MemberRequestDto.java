@@ -11,9 +11,11 @@ public class MemberRequestDto {
 
     @Email
     private String email;
-    @Pattern(regexp = "^[0-9a-zA-Z]$")
+    @Pattern(regexp = "^[a-z0-9]*$")
     private String nickname;
-    @Pattern(regexp = "^[0-9a-zA-Z]{8,15}$")
+    @Pattern(regexp = "^[a-zA-Z0-9]{8,15}$")
     private String password;
+
+    private String introduce;
 
 }
