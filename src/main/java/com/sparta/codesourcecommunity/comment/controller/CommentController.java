@@ -1,49 +1,46 @@
 package com.sparta.codesourcecommunity.comment.controller;
 
-import com.sparta.codesourcecommunity.comment.dto.CommentRequestDto;
 import com.sparta.codesourcecommunity.comment.dto.CommentResponseDto;
-import com.sparta.codesourcecommunity.security.MemberDetailsImpl;
+import com.sparta.codesourcecommunity.comment.service.CommentService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/board/{boardId}/comment")
+@RequiredArgsConstructor
 public class CommentController {
 
+    private final CommentService commentService;
+
     @PostMapping("")
-    public CommentResponseDto createComment(){
+    public CommentResponseDto createComment() {
 
         return null;
     }
 
     @GetMapping("")
-    public ResponseEntity<?> readComment(){
+    public ResponseEntity<?> readComment() {
 
         return null;
     }
 
     @PatchMapping("/{commentId}")
-    public CommentResponseDto updateComment(){
+    public CommentResponseDto updateComment() {
 
         return null;
     }
 
     @DeleteMapping("/{commentId}")
-    public ResponseEntity<?> deleteComment(){
+    public ResponseEntity<?> deleteComment() {
 
         return null;
     }
-
-
 
 
 }

@@ -44,5 +44,4 @@ public class Comment {
     private List<ReComment> reComments = new ArrayList<>();
 
 
-
 }
