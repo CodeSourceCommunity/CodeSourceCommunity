@@ -51,10 +51,9 @@ public class MemberService {
     @Transactional
     public void modifyNickname(MemberRequestDto memberRequestDto, Member memberDto) {
         String nickname = memberRequestDto.getNickname();
-        String password = memberRequestDto.getPassword();
         Member member = memberRepository.findById(memberDto.getMemberId()).orElseThrow();
 
-        if (!passwordEncoder.matches(password, member.getPassword())) {
+        if (!passwordEncoder.matches(memberRequestDto.getPassword(), member.getPassword())) {
             throw new NotMatchPasswordException();
         }
 
@@ -65,7 +64,6 @@ public class MemberService {
     public void modifyPassword(ModifyPasswordDto passwordDto, Member memberDto) {
         Member member = memberRepository.findById(memberDto.getMemberId()).orElseThrow();
         String changePassword = passwordEncoder.encode(passwordDto.getChangePassword());
-        String changePasswordConfirm = passwordEncoder.encode(passwordDto.getChangePasswordConfirm());
 
         if (!passwordEncoder.matches(passwordDto.getPassword(), memberDto.getPassword())) {
             throw new NotMatchPasswordException();
@@ -75,7 +73,7 @@ public class MemberService {
             throw new SamePasswordException();
         }
 
-        if (!changePassword.equals(changePasswordConfirm)) {
+        if (!passwordDto.getChangePassword().equals(passwordDto.getChangePasswordConfirm())) {
             throw new PasswordMismatchException();
         }
 
