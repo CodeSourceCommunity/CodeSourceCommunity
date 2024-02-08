@@ -9,6 +9,8 @@ import com.sparta.codesourcecommunity.recomment.dto.ReCommentResponseDto;
 import com.sparta.codesourcecommunity.recomment.entity.ReComment;
 import com.sparta.codesourcecommunity.recomment.repository.ReCommentRepository;
 import com.sparta.codesourcecommunity.security.MemberDetailsImpl;
+import java.util.ArrayList;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -28,5 +30,16 @@ public class ReCommentService {
         reCommentRepository.save(saveReComment);
 
         return new ReCommentResponseDto(saveReComment);
+    }
+
+    public List<ReCommentResponseDto> readReComment(Long commentId) {
+        List<ReComment> reCommentList = reCommentRepository.findAllByComment_CommentId(commentId);
+        List<ReCommentResponseDto> reCommentResponseDtos = new ArrayList<>();
+
+        for (ReComment reComment : reCommentList) {
+            reCommentResponseDtos.add(new ReCommentResponseDto(reComment));
+        }
+
+        return reCommentResponseDtos;
     }
 }

@@ -6,6 +6,7 @@ import com.sparta.codesourcecommunity.recomment.dto.ReCommentResponseDto;
 import com.sparta.codesourcecommunity.recomment.service.ReCommentService;
 import com.sparta.codesourcecommunity.security.MemberDetailsImpl;
 import jakarta.validation.Valid;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -35,9 +36,9 @@ public class ReCommentController {
     }
 
     @GetMapping("")
-    public ResponseEntity<?> readReComment() {
+    public List<ReCommentResponseDto> readReComment(@PathVariable Long commentId) {
 
-        return null;
+        return reCommentService.readReComment(commentId);
     }
 
     @PatchMapping("/{recommentId}")
