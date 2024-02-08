@@ -1,6 +1,7 @@
 package com.sparta.codesourcecommunity.comment.entity;
 
 import com.sparta.codesourcecommunity.board.entity.Board;
+import com.sparta.codesourcecommunity.comment.dto.CommentRequestDto;
 import com.sparta.codesourcecommunity.member.entity.Member;
 import com.sparta.codesourcecommunity.recomment.entity.ReComment;
 import jakarta.persistence.Column;
@@ -15,12 +16,14 @@ import jakarta.persistence.Table;
 import java.util.ArrayList;
 import java.util.List;
 import lombok.AllArgsConstructor;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
+@Getter
 @Setter
 @Table(name = "comments")
 public class Comment {
@@ -43,6 +46,13 @@ public class Comment {
     @OneToMany(mappedBy = "comment")
     private List<ReComment> reComments = new ArrayList<>();
 
+    public Comment(String contents, Member member, Board board) {
+        this.contents = contents;
+        this.member = member;
+        this.board = board;
+    }
 
-
+    public void update(CommentRequestDto commentRequestDto) {
+        this.contents = commentRequestDto.getComment();
+    }
 }
