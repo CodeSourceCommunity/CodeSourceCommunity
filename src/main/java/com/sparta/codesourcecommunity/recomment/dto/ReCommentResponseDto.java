@@ -5,6 +5,7 @@ import lombok.Getter;
 
 @Getter
 public class ReCommentResponseDto {
+
     private String reComment;
 
     public ReCommentResponseDto(ReComment reComment) {

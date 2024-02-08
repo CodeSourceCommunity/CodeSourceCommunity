@@ -1,7 +1,6 @@
 package com.sparta.codesourcecommunity.recomment.controller;
 
-import com.sparta.codesourcecommunity.CommonResponseDto;
-import com.sparta.codesourcecommunity.comment.dto.CommentRequestDto;
+import com.sparta.codesourcecommunity.common.CommonResponseDto;
 import com.sparta.codesourcecommunity.recomment.dto.ReCommentRequestDto;
 import com.sparta.codesourcecommunity.recomment.dto.ReCommentResponseDto;
 import com.sparta.codesourcecommunity.recomment.service.ReCommentService;
@@ -9,7 +8,6 @@ import com.sparta.codesourcecommunity.security.MemberDetailsImpl;
 import jakarta.validation.Valid;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;

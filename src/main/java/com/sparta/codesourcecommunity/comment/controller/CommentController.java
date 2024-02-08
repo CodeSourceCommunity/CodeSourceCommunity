@@ -1,15 +1,13 @@
 package com.sparta.codesourcecommunity.comment.controller;
 
-import com.sparta.codesourcecommunity.CommonResponseDto;
 import com.sparta.codesourcecommunity.comment.dto.CommentRequestDto;
 import com.sparta.codesourcecommunity.comment.dto.CommentResponseDto;
 import com.sparta.codesourcecommunity.comment.service.CommentService;
-import com.sparta.codesourcecommunity.member.entity.Member;
+import com.sparta.codesourcecommunity.common.CommonResponseDto;
 import com.sparta.codesourcecommunity.security.MemberDetailsImpl;
 import jakarta.validation.Valid;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;

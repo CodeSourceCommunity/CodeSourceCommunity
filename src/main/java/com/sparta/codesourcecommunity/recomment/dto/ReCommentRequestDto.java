@@ -4,5 +4,6 @@ import lombok.Getter;
 
 @Getter
 public class ReCommentRequestDto {
+
     private String reComment;
 }

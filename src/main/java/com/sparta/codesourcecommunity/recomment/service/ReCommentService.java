@@ -1,8 +1,8 @@
 package com.sparta.codesourcecommunity.recomment.service;
 
-import com.sparta.codesourcecommunity.CommonResponseDto;
 import com.sparta.codesourcecommunity.comment.entity.Comment;
 import com.sparta.codesourcecommunity.comment.repository.CommentRepository;
+import com.sparta.codesourcecommunity.common.CommonResponseDto;
 import com.sparta.codesourcecommunity.member.entity.Member;
 import com.sparta.codesourcecommunity.member.repository.MemberRepository;
 import com.sparta.codesourcecommunity.recomment.dto.ReCommentRequestDto;
