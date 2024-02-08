@@ -9,7 +9,7 @@ public class MemberDetailsImpl implements UserDetails {
 
     private final Member member;
 
-    public MemberDetailsImpl(Member member){
+    public MemberDetailsImpl(Member member) {
         this.member = member;
     }
 
