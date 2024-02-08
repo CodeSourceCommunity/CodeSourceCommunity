@@ -49,12 +49,6 @@ public class Member {
     private List<Like> like = new ArrayList<>();
 
 
-    public Member(String email, String nickname, String password) {
-        this.email = email;
-        this.nickname = nickname;
-        this.password = password;
-    }
-
     public Member(String email, String nickname, String password, String introduce){
         this.email = email;
         this.nickname = nickname;
