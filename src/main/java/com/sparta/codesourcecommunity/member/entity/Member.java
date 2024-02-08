@@ -52,4 +52,8 @@ public class Member {
         this.password = password;
         this.introduce = introduce;
     }
+
+    public void UpdateNickname(String nickname) {
+        this.nickname = nickname;
+    }
 }

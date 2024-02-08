@@ -1,11 +1,18 @@
 package com.sparta.codesourcecommunity.member.service;
 
 import com.sparta.codesourcecommunity.member.dto.MemberRequestDto;
+import com.sparta.codesourcecommunity.member.dto.ModifyPasswordDto;
 import com.sparta.codesourcecommunity.member.entity.Member;
+import com.sparta.codesourcecommunity.member.exception.DuplicateMemberException;
+import com.sparta.codesourcecommunity.member.exception.NotFoundMemberException;
+import com.sparta.codesourcecommunity.member.exception.NotMatchPasswordException;
+import com.sparta.codesourcecommunity.member.exception.PasswordMismatchException;
+import com.sparta.codesourcecommunity.member.exception.SamePasswordException;
 import com.sparta.codesourcecommunity.member.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
@@ -21,7 +28,7 @@ public class MemberService {
         String introduce = memberRequestDto.getIntroduce();
 
         if (memberRepository.findByEmail(email).isPresent()) {
-            throw new IllegalArgumentException("이미 존재하는 유저 입니다.");
+            throw new DuplicateMemberException();
         }
 
         Member member = new Member(email, nickname, password, introduce);
@@ -34,10 +41,23 @@ public class MemberService {
         String password = memberRequestDto.getPassword();
 
         Member member = memberRepository.findByEmail(email)
-            .orElseThrow(() -> new IllegalArgumentException("등록된 유저가 없습니다."));
+            .orElseThrow(NotFoundMemberException::new);
 
         if (!passwordEncoder.matches(password, member.getPassword())) {
-            throw new IllegalArgumentException("비밀번호가 일치하지 않습니다.");
+            throw new NotMatchPasswordException();
         }
+    }
+
+    @Transactional
+    public void modifyNickname(MemberRequestDto memberRequestDto, Member memberDto) {
+        String nickname = memberRequestDto.getNickname();
+        String password = memberRequestDto.getPassword();
+        Member member = memberRepository.findById(memberDto.getMemberId()).orElseThrow();
+
+        if (!passwordEncoder.matches(password, member.getPassword())) {
+            throw new NotMatchPasswordException();
+        }
+
+        member.UpdateNickname(nickname);
     }
 }
