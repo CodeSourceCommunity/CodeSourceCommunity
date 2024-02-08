@@ -1,9 +1,8 @@
 package com.sparta.codesourcecommunity.member.config;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.sparta.codesourcecommunity.member.JwtAuthorizationFilter;
-import com.sparta.codesourcecommunity.member.JwtUtil;
-import com.sparta.codesourcecommunity.member.service.MemberService;
+import com.sparta.codesourcecommunity.security.JwtAuthorizationFilter;
+import com.sparta.codesourcecommunity.security.JwtUtil;
 import com.sparta.codesourcecommunity.security.MemberDetailsService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
@@ -25,12 +24,12 @@ public class WebSecurityConfig {
     private final ObjectMapper objectMapper;
 
     @Bean
-    public PasswordEncoder passwordEncoder(){
+    public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
 
     @Bean
-    public JwtAuthorizationFilter jwtAuthorizationFilter(){
+    public JwtAuthorizationFilter jwtAuthorizationFilter() {
         return new JwtAuthorizationFilter(jwtUtil, memberDetailsService, objectMapper);
     }
 
@@ -46,7 +45,8 @@ public class WebSecurityConfig {
 
         http.authorizeHttpRequests((authorizeHttpRequests) ->
             authorizeHttpRequests
-                .requestMatchers(PathRequest.toStaticResources().atCommonLocations()).permitAll() // resources 접근 허용 설정
+                .requestMatchers(PathRequest.toStaticResources().atCommonLocations())
+                .permitAll() // resources 접근 허용 설정
                 .requestMatchers("/member/**").permitAll() // '/member/'로 시작하는 요청 모두 접근 허가
                 .anyRequest().authenticated() // 그 외 모든 요청 인증처리
         );

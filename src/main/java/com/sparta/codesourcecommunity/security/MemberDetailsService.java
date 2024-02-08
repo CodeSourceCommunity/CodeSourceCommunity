@@ -13,9 +13,9 @@ public class MemberDetailsService {
 
     private final MemberRepository memberRepository;
 
-    public UserDetails getMemberDetails(String email){
+    public UserDetails getMemberDetails(String email) {
         Member member = memberRepository.findByEmail(email)
-            .orElseThrow(()-> new UsernameNotFoundException("Not found" + email));
+            .orElseThrow(() -> new UsernameNotFoundException("Not found" + email));
         return new MemberDetailsImpl(member);
     }
 
