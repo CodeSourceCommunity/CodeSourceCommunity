@@ -42,9 +42,12 @@ public class ReCommentController {
     }
 
     @PatchMapping("/{recommentId}")
-    public ReCommentResponseDto updateReComment() {
+    public ReCommentResponseDto updateReComment(
+        @PathVariable Long recommentId,
+        @Valid @RequestBody ReCommentRequestDto reCommentRequestDto,
+        @AuthenticationPrincipal MemberDetailsImpl memberDetails) {
 
-        return null;
+        return reCommentService.updateReComment(recommentId, reCommentRequestDto, memberDetails);
     }
 
     @DeleteMapping("/{recommentId}")

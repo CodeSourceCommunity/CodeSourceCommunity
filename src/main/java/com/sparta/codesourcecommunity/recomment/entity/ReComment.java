@@ -2,6 +2,7 @@ package com.sparta.codesourcecommunity.recomment.entity;
 
 import com.sparta.codesourcecommunity.comment.entity.Comment;
 import com.sparta.codesourcecommunity.member.entity.Member;
+import com.sparta.codesourcecommunity.recomment.dto.ReCommentRequestDto;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -43,5 +44,9 @@ public class ReComment {
         this.reCommentContent = reComment;
         this.member = member;
         this.comment = comment;
+    }
+
+    public void update(ReCommentRequestDto reCommentRequestDto) {
+        this.reCommentContent = reCommentRequestDto.getReComment();
     }
 }
