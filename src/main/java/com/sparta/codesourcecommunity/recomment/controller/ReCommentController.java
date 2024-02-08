@@ -1,5 +1,6 @@
 package com.sparta.codesourcecommunity.recomment.controller;
 
+import com.sparta.codesourcecommunity.CommonResponseDto;
 import com.sparta.codesourcecommunity.comment.dto.CommentRequestDto;
 import com.sparta.codesourcecommunity.recomment.dto.ReCommentRequestDto;
 import com.sparta.codesourcecommunity.recomment.dto.ReCommentResponseDto;
@@ -51,9 +52,11 @@ public class ReCommentController {
     }
 
     @DeleteMapping("/{recommentId}")
-    public ResponseEntity<?> deleteReComment() {
+    public CommonResponseDto deleteReComment(
+        @PathVariable Long recommentId,
+        @AuthenticationPrincipal MemberDetailsImpl memberDetails) {
 
-        return null;
+        return reCommentService.deleteComment(recommentId, memberDetails);
     }
 
 

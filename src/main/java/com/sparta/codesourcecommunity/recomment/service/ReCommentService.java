@@ -1,5 +1,6 @@
 package com.sparta.codesourcecommunity.recomment.service;
 
+import com.sparta.codesourcecommunity.CommonResponseDto;
 import com.sparta.codesourcecommunity.comment.entity.Comment;
 import com.sparta.codesourcecommunity.comment.repository.CommentRepository;
 import com.sparta.codesourcecommunity.member.entity.Member;
@@ -55,5 +56,19 @@ public class ReCommentService {
         reComment.update(reCommentRequestDto);
 
         return new ReCommentResponseDto(reComment);
+    }
+
+    public CommonResponseDto deleteComment(Long recommentId, MemberDetailsImpl memberDetails) {
+        ReComment reComment = reCommentRepository.findById(recommentId).orElseThrow();
+
+        if (!(reComment.getMember().getMemberId() == memberDetails.getMember().getMemberId())){
+            throw new IllegalArgumentException();
+        }
+
+        reCommentRepository.delete(reComment);
+        String message = "삭제가 정상적으로 처리되었습니다.";
+
+        return new CommonResponseDto(message, 200);
+
     }
 }
