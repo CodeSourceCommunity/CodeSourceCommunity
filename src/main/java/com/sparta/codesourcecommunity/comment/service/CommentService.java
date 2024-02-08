@@ -1,5 +1,6 @@
 package com.sparta.codesourcecommunity.comment.service;
 
+import com.sparta.codesourcecommunity.CommonResponseDto;
 import com.sparta.codesourcecommunity.board.entity.Board;
 import com.sparta.codesourcecommunity.board.repository.BoardRepository;
 import com.sparta.codesourcecommunity.comment.dto.CommentRequestDto;
@@ -12,6 +13,7 @@ import com.sparta.codesourcecommunity.security.MemberDetailsImpl;
 import java.util.ArrayList;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -56,5 +58,18 @@ public class CommentService {
 
         return new CommentResponseDto(comment);
 
+    }
+
+    public CommonResponseDto deleteComment(Long commentId, MemberDetailsImpl memberDetails) {
+        Comment comment = commentRepository.findById(commentId).orElseThrow();
+
+        if (!(comment.getMember().getMemberId() == memberDetails.getMember().getMemberId())){
+            throw new IllegalArgumentException();
+        }
+
+        commentRepository.delete(comment);
+
+        String message = "삭제가 정상적으로 처리되었습니다.";
+        return new CommonResponseDto(message, 200);
     }
 }

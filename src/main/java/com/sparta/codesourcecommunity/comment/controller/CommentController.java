@@ -1,5 +1,6 @@
 package com.sparta.codesourcecommunity.comment.controller;
 
+import com.sparta.codesourcecommunity.CommonResponseDto;
 import com.sparta.codesourcecommunity.comment.dto.CommentRequestDto;
 import com.sparta.codesourcecommunity.comment.dto.CommentResponseDto;
 import com.sparta.codesourcecommunity.comment.service.CommentService;
@@ -51,9 +52,11 @@ public class CommentController {
     }
 
     @DeleteMapping("/{commentId}")
-    public ResponseEntity<?> deleteComment() {
+    public CommonResponseDto deleteComment(
+        @PathVariable Long commentId,
+        @AuthenticationPrincipal MemberDetailsImpl memberDetails) {
 
-        return null;
+        return commentService.deleteComment(commentId, memberDetails);
     }
 
 
