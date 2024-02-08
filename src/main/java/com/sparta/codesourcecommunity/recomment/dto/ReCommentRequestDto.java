@@ -1,5 +1,8 @@
 package com.sparta.codesourcecommunity.recomment.dto;
 
-public class ReCommentRequestDto {
+import lombok.Getter;
 
+@Getter
+public class ReCommentRequestDto {
+    private String reComment;
 }
