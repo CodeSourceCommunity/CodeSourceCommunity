@@ -60,4 +60,27 @@ public class MemberService {
 
         member.UpdateNickname(nickname);
     }
+
+    @Transactional
+    public void modifyPassword(ModifyPasswordDto passwordDto, Member memberDto) {
+        Member member = memberRepository.findById(memberDto.getMemberId()).orElseThrow();
+        String changePassword = passwordDto.getChangePassword();
+        String ChangePasswordConfirm = passwordDto.getChangePasswordConfirm();
+
+        if (!passwordEncoder.matches(passwordDto.getPassword(), memberDto.getPassword())) {
+            throw new NotMatchPasswordException();
+        }
+
+        if (passwordDto.getPassword().equals(passwordDto.getChangePassword())) {
+            throw new SamePasswordException();
+        }
+
+        if (!changePassword.equals(ChangePasswordConfirm)) {
+            throw new PasswordMismatchException();
+        }
+
+        String changedPassword = passwordEncoder.encode(changePassword);
+
+        member.UpdatePassword(changedPassword);
+    }
 }

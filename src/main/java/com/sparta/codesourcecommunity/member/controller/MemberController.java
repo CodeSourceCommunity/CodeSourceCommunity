@@ -70,4 +70,17 @@ public class MemberController {
 
         return ResponseEntity.ok().body(new CommonResponseDto("닉네임 수정 성공", HttpStatus.OK.value()));
     }
+
+    @PatchMapping("/password")
+    public ResponseEntity<CommonResponseDto> modifyPassword(@AuthenticationPrincipal
+    MemberDetailsImpl memberDetails, @Valid @RequestBody ModifyPasswordDto passwordDto) {
+        try {
+            memberService.modifyPassword(passwordDto, memberDetails.getMember());
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest()
+                .body(new CommonResponseDto(e.getMessage(), HttpStatus.BAD_REQUEST.value()));
+        }
+
+        return ResponseEntity.ok().body(new CommonResponseDto("비밀번호 수정 성공", HttpStatus.OK.value()));
+    }
 }
