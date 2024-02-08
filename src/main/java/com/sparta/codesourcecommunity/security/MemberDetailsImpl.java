@@ -2,17 +2,19 @@ package com.sparta.codesourcecommunity.security;
 
 import com.sparta.codesourcecommunity.member.entity.Member;
 import java.util.Collection;
-import lombok.Getter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 public class MemberDetailsImpl implements UserDetails {
 
-    @Getter
     private final Member member;
 
     public MemberDetailsImpl(Member member){
         this.member = member;
+    }
+
+    public Member getMember() {
+        return member;
     }
 
     @Override

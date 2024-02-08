@@ -4,6 +4,7 @@ import com.sparta.codesourcecommunity.member.dto.MemberRequestDto;
 import com.sparta.codesourcecommunity.member.entity.Member;
 import com.sparta.codesourcecommunity.member.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -11,11 +12,12 @@ import org.springframework.stereotype.Service;
 public class MemberService {
 
     private final MemberRepository memberRepository;
+    private final PasswordEncoder passwordEncoder;
 
     public void signup(MemberRequestDto memberRequestDto) {
         String email = memberRequestDto.getEmail();
         String nickname = memberRequestDto.getNickname();
-        String password = memberRequestDto.getPassword();
+        String password = passwordEncoder.encode(memberRequestDto.getPassword());
         String introduce = memberRequestDto.getIntroduce();
 
 

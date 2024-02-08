@@ -1,6 +1,6 @@
 package com.sparta.codesourcecommunity.member.controller;
 
-import com.sparta.codesourcecommunity.CommonResponseDto;
+import com.sparta.codesourcecommunity.common.CommonResponseDto;
 import com.sparta.codesourcecommunity.member.dto.MemberRequestDto;
 import com.sparta.codesourcecommunity.member.service.MemberService;
 import jakarta.validation.Valid;
