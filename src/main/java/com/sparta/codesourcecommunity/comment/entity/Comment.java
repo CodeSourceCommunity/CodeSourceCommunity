@@ -1,6 +1,7 @@
 package com.sparta.codesourcecommunity.comment.entity;
 
 import com.sparta.codesourcecommunity.board.entity.Board;
+import com.sparta.codesourcecommunity.comment.dto.CommentRequestDto;
 import com.sparta.codesourcecommunity.member.entity.Member;
 import com.sparta.codesourcecommunity.recomment.entity.ReComment;
 import jakarta.persistence.Column;
@@ -49,5 +50,9 @@ public class Comment {
         this.contents = contents;
         this.member = member;
         this.board = board;
+    }
+
+    public void update(CommentRequestDto commentRequestDto) {
+        this.contents = commentRequestDto.getComment();
     }
 }

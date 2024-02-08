@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
@@ -41,5 +42,19 @@ public class CommentService {
         }
 
         return commentResponseDtos;
+    }
+
+    @Transactional
+    public CommentResponseDto updateComment(Long commentId, CommentRequestDto commentRequestDto, MemberDetailsImpl memberDetails) {
+        Comment comment = commentRepository.findById(commentId).orElseThrow();
+
+        if (!(comment.getMember().getMemberId() == memberDetails.getMember().getMemberId())){
+            throw new IllegalArgumentException();
+        }
+
+        comment.update(commentRequestDto);
+
+        return new CommentResponseDto(comment);
+
     }
 }

@@ -42,9 +42,12 @@ public class CommentController {
     }
 
     @PatchMapping("/{commentId}")
-    public CommentResponseDto updateComment() {
+    public CommentResponseDto updateComment(
+        @PathVariable Long commentId,
+        @Valid @RequestBody CommentRequestDto commentRequestDto,
+        @AuthenticationPrincipal MemberDetailsImpl memberDetails) {
 
-        return null;
+        return commentService.updateComment(commentId,commentRequestDto, memberDetails);
     }
 
     @DeleteMapping("/{commentId}")
