@@ -61,7 +61,7 @@ public class Member {
         this.password = changePassword;
     }
 
-    public void UpdateIntroduce(String introduce){
+    public void UpdateIntroduce(String introduce) {
         this.introduce = introduce;
     }
 }
