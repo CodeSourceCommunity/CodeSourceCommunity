@@ -54,4 +54,10 @@ public class MemberController {
         memberService.modifyPassword(passwordDto, memberDetails.getMember());
         return ResponseEntity.ok().body(new CommonResponseDto("비밀번호 수정 성공", HttpStatus.OK.value()));
     }
+
+    @PatchMapping("/introduce")
+    public ResponseEntity<CommonResponseDto> modifyIntroduce(@AuthenticationPrincipal MemberDetailsImpl memberDetails, @Valid @RequestBody MemberRequestDto memberRequestDto){
+        memberService.modifyIntroduce(memberRequestDto, memberDetails.getMember());
+        return ResponseEntity.ok().body(new CommonResponseDto("자기소개 수정 성공", HttpStatus.OK.value()));
+    }
 }

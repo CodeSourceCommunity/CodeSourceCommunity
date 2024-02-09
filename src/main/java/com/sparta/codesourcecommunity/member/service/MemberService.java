@@ -51,7 +51,8 @@ public class MemberService {
     @Transactional
     public void modifyNickname(MemberRequestDto memberRequestDto, Member memberDto) {
         String nickname = memberRequestDto.getNickname();
-        Member member = memberRepository.findById(memberDto.getMemberId()).orElseThrow();
+        Member member = memberRepository.findById(memberDto.getMemberId())
+            .orElseThrow(NotFoundMemberException::new);
 
         if (!passwordEncoder.matches(memberRequestDto.getPassword(), member.getPassword())) {
             throw new NotMatchPasswordException();
@@ -62,8 +63,9 @@ public class MemberService {
 
     @Transactional
     public void modifyPassword(ModifyPasswordDto passwordDto, Member memberDto) {
-        Member member = memberRepository.findById(memberDto.getMemberId()).orElseThrow();
         String changePassword = passwordEncoder.encode(passwordDto.getChangePassword());
+        Member member = memberRepository.findById(memberDto.getMemberId())
+            .orElseThrow(NotFoundMemberException::new);
 
         if (!passwordEncoder.matches(passwordDto.getPassword(), memberDto.getPassword())) {
             throw new NotMatchPasswordException();
@@ -78,5 +80,18 @@ public class MemberService {
         }
 
         member.UpdatePassword(changePassword);
+    }
+
+    @Transactional
+    public void modifyIntroduce(MemberRequestDto memberRequestDto, Member memberDto) {
+        String introduce = memberRequestDto.getIntroduce();
+        Member member = memberRepository.findById(memberDto.getMemberId())
+            .orElseThrow(NotFoundMemberException::new);
+
+        if (!passwordEncoder.matches(memberRequestDto.getPassword(), member.getPassword())) {
+            throw new NotMatchPasswordException();
+        }
+
+        member.UpdateIntroduce(introduce);
     }
 }
