@@ -1,5 +1,6 @@
 package com.sparta.codesourcecommunity.member.service;
 
+import com.sparta.codesourcecommunity.member.dto.MemberLoginRequestDto;
 import com.sparta.codesourcecommunity.member.dto.MemberRequestDto;
 import com.sparta.codesourcecommunity.member.dto.ModifyPasswordDto;
 import com.sparta.codesourcecommunity.member.entity.Member;
@@ -36,9 +37,9 @@ public class MemberService {
     }
 
 
-    public void login(MemberRequestDto memberRequestDto) {
-        String email = memberRequestDto.getEmail();
-        String password = memberRequestDto.getPassword();
+    public void login(MemberLoginRequestDto memberLoginRequestDto) {
+        String email = memberLoginRequestDto.getEmail();
+        String password = memberLoginRequestDto.getPassword();
 
         Member member = memberRepository.findByEmail(email)
             .orElseThrow(NotFoundMemberException::new);

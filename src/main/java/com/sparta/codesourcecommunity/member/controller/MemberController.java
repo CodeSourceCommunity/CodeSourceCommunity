@@ -1,6 +1,7 @@
 package com.sparta.codesourcecommunity.member.controller;
 
 import com.sparta.codesourcecommunity.common.CommonResponseDto;
+import com.sparta.codesourcecommunity.member.dto.MemberLoginRequestDto;
 import com.sparta.codesourcecommunity.member.dto.MemberRequestDto;
 import com.sparta.codesourcecommunity.member.dto.ModifyPasswordDto;
 import com.sparta.codesourcecommunity.member.service.MemberService;
@@ -35,12 +36,13 @@ public class MemberController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<CommonResponseDto> login(@RequestBody MemberRequestDto memberRequestDto,
+    public ResponseEntity<CommonResponseDto> login(
+        @Valid @RequestBody MemberLoginRequestDto memberLoginRequestDto,
         HttpServletResponse response) {
-        memberService.login(memberRequestDto);
+        memberService.login(memberLoginRequestDto);
         // Response Header에 Key : JwtUtil.AUTHORIZATION_HEADER , Value : jwtUtil.createToken(memberRequestDto.getEmail()) 셋팅
         response.setHeader(JwtUtil.AUTHORIZATION_HEADER,
-            jwtUtil.createToken(memberRequestDto.getEmail()));
+            jwtUtil.createToken(memberLoginRequestDto.getEmail()));
         return ResponseEntity.ok().body(new CommonResponseDto("로그인 성공", HttpStatus.OK.value()));
     }
 
