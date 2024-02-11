@@ -5,7 +5,6 @@ import com.sparta.codesourcecommunity.member.dto.MemberLoginRequestDto;
 import com.sparta.codesourcecommunity.member.dto.MemberRequestDto;
 import com.sparta.codesourcecommunity.member.dto.MemberResponseDto;
 import com.sparta.codesourcecommunity.member.dto.ModifyPasswordDto;
-import com.sparta.codesourcecommunity.member.entity.Member;
 import com.sparta.codesourcecommunity.member.service.MemberService;
 import com.sparta.codesourcecommunity.security.JwtUtil;
 import com.sparta.codesourcecommunity.security.MemberDetailsImpl;
@@ -53,7 +52,7 @@ public class MemberController {
     }
 
     @GetMapping("/profile")
-    public MemberResponseDto getProfile(@AuthenticationPrincipal MemberDetailsImpl memberDetails){
+    public MemberResponseDto getProfile(@AuthenticationPrincipal MemberDetailsImpl memberDetails) {
         return memberService.getProfile(memberDetails);
     }
 
