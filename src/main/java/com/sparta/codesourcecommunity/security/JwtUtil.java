@@ -8,7 +8,11 @@ import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.UnsupportedJwtException;
 import io.jsonwebtoken.security.Keys;
 import jakarta.annotation.PostConstruct;
+import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.security.Key;
 import java.util.Base64;
 import java.util.Date;
@@ -45,6 +49,16 @@ public class JwtUtil {
             return bearerToken.substring(7);
         }
         return null;
+    }
+
+    public void addJwtToCookie(String token, HttpServletResponse res) {
+        token = URLEncoder.encode(token, StandardCharsets.UTF_8).replaceAll("\\+", "%20"); // Cookie Value 에는 공백이 불가능해서 encoding 진행
+
+        Cookie cookie = new Cookie(AUTHORIZATION_HEADER, token); // Name-Value
+        cookie.setPath("/");
+
+        // Response 객체에 Cookie 추가
+        res.addCookie(cookie);
     }
 
 

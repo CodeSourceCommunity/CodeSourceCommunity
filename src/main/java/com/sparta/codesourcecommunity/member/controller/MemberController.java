@@ -44,8 +44,11 @@ public class MemberController {
         HttpServletResponse response) {
         memberService.login(memberLoginRequestDto);
         // Response Header에 Key : JwtUtil.AUTHORIZATION_HEADER , Value : jwtUtil.createToken(memberRequestDto.getEmail()) 셋팅
+        String token = jwtUtil.createToken(memberLoginRequestDto.getEmail());
         response.setHeader(JwtUtil.AUTHORIZATION_HEADER,
-            jwtUtil.createToken(memberLoginRequestDto.getEmail()));
+            token);
+        // cookie에 token 담기
+        jwtUtil.addJwtToCookie(token, response);
         return ResponseEntity.ok().body(new CommonResponseDto("로그인 성공", HttpStatus.OK.value()));
     }
 
