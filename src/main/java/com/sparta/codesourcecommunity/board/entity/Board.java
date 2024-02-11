@@ -1,5 +1,6 @@
 package com.sparta.codesourcecommunity.board.entity;
 
+import com.sparta.codesourcecommunity.comment.dto.CommentRequestDto;
 import com.sparta.codesourcecommunity.comment.entity.Comment;
 import com.sparta.codesourcecommunity.like.entity.Like;
 import com.sparta.codesourcecommunity.member.entity.Member;
@@ -39,11 +40,22 @@ public class Board {
     @JoinColumn(name = "memberId")
     private Member member;
 
+    @ManyToOne
+    @JoinColumn(name = "boardId")
+    private Board board;
+
     @OneToMany(mappedBy = "board")
     private List<Comment> comment = new ArrayList<>();
 
     @OneToMany(mappedBy = "board")
     private List<Like> like = new ArrayList<>();
+
+    public Board(String title, String contents, Board board) {
+        this.title = title;
+        this.contents = contents;
+        this.board = board;
+    }
+
 
 
 
