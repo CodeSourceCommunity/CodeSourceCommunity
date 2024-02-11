@@ -2,6 +2,7 @@ package com.sparta.codesourcecommunity.member.service;
 
 import com.sparta.codesourcecommunity.member.dto.MemberLoginRequestDto;
 import com.sparta.codesourcecommunity.member.dto.MemberRequestDto;
+import com.sparta.codesourcecommunity.member.dto.MemberResponseDto;
 import com.sparta.codesourcecommunity.member.dto.ModifyPasswordDto;
 import com.sparta.codesourcecommunity.member.entity.Member;
 import com.sparta.codesourcecommunity.member.exception.DuplicateMemberException;
@@ -10,6 +11,7 @@ import com.sparta.codesourcecommunity.member.exception.NotMatchPasswordException
 import com.sparta.codesourcecommunity.member.exception.PasswordMismatchException;
 import com.sparta.codesourcecommunity.member.exception.SamePasswordException;
 import com.sparta.codesourcecommunity.member.repository.MemberRepository;
+import com.sparta.codesourcecommunity.security.MemberDetailsImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -94,5 +96,10 @@ public class MemberService {
         }
 
         member.UpdateIntroduce(introduce);
+    }
+
+    public MemberResponseDto getProfile(MemberDetailsImpl memberDetails) {
+        Member member = memberRepository.findById(memberDetails.getMember().getMemberId()).orElseThrow(NotFoundMemberException::new);
+        return new MemberResponseDto(member.getEmail(), member.getNickname(), member.getIntroduce());
     }
 }

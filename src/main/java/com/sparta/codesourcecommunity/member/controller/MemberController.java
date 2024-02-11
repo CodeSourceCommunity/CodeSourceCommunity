@@ -3,7 +3,9 @@ package com.sparta.codesourcecommunity.member.controller;
 import com.sparta.codesourcecommunity.common.CommonResponseDto;
 import com.sparta.codesourcecommunity.member.dto.MemberLoginRequestDto;
 import com.sparta.codesourcecommunity.member.dto.MemberRequestDto;
+import com.sparta.codesourcecommunity.member.dto.MemberResponseDto;
 import com.sparta.codesourcecommunity.member.dto.ModifyPasswordDto;
+import com.sparta.codesourcecommunity.member.entity.Member;
 import com.sparta.codesourcecommunity.member.service.MemberService;
 import com.sparta.codesourcecommunity.security.JwtUtil;
 import com.sparta.codesourcecommunity.security.MemberDetailsImpl;
@@ -13,6 +15,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -44,6 +47,11 @@ public class MemberController {
         response.setHeader(JwtUtil.AUTHORIZATION_HEADER,
             jwtUtil.createToken(memberLoginRequestDto.getEmail()));
         return ResponseEntity.ok().body(new CommonResponseDto("로그인 성공", HttpStatus.OK.value()));
+    }
+
+    @GetMapping("/profile")
+    public MemberResponseDto getProfile(@AuthenticationPrincipal MemberDetailsImpl memberDetails){
+        return memberService.getProfile(memberDetails);
     }
 
     @PatchMapping("/nickname")
