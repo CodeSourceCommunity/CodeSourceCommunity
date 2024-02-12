@@ -1,6 +1,5 @@
 package com.sparta.codesourcecommunity.board.entity;
 
-import com.sparta.codesourcecommunity.comment.dto.CommentRequestDto;
 import com.sparta.codesourcecommunity.comment.entity.Comment;
 import com.sparta.codesourcecommunity.like.entity.Like;
 import com.sparta.codesourcecommunity.member.entity.Member;
@@ -16,11 +15,12 @@ import jakarta.persistence.Table;
 import java.util.ArrayList;
 import java.util.List;
 import lombok.AllArgsConstructor;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
+import org.hibernate.annotations.ColumnDefault;
 
 @Entity
-@Setter
+@Getter
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "boards")
@@ -50,14 +50,17 @@ public class Board {
     @OneToMany(mappedBy = "board")
     private List<Like> like = new ArrayList<>();
 
-    public Board(String title, String contents, Board board) {
+    @ColumnDefault("0")
+    @Column(name = "view_count",nullable = false)
+    private Integer viewCount;
+
+    public Board(String title, String contents) {
         this.title = title;
         this.contents = contents;
-        this.board = board;
     }
 
-
-
-
-
+    public void update(String title, String contents) {
+        this.title = title;
+        this.contents = contents;
+    }
 }

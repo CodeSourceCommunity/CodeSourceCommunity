@@ -4,27 +4,50 @@ import com.sparta.codesourcecommunity.board.dto.BoardRequestDto;
 import com.sparta.codesourcecommunity.board.dto.BoardResponseDto;
 import com.sparta.codesourcecommunity.board.entity.Board;
 import com.sparta.codesourcecommunity.board.repository.BoardRepository;
-import com.sparta.codesourcecommunity.comment.dto.CommentRequestDto;
-import com.sparta.codesourcecommunity.comment.dto.CommentResponseDto;
-import com.sparta.codesourcecommunity.comment.entity.Comment;
-import com.sparta.codesourcecommunity.member.entity.Member;
 import com.sparta.codesourcecommunity.member.repository.MemberRepository;
-import com.sparta.codesourcecommunity.security.MemberDetailsImpl;
-import lombok.RequiredArgsConstructor;
+import java.util.List;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
-@RequiredArgsConstructor
 public class BoardService {
 
     private final MemberRepository memberRepository;
-    private final BoardRepository boardRepository;
+    private static BoardRepository boardRepository;
 
-    public BoardResponseDto createBoard(Long boardId, BoardRequestDto boardRequestDto,
-        MemberDetailsImpl memberDetails) {
-        Member member = memberRepository.findById(memberDetails.getMember().getMemberId())
-            .orElseThrow();
-        Board board = boardRepository.findById(boardId).orElseThrow();
+    public BoardService(MemberRepository memberRepository, BoardRepository boardRepository) {
+      this.memberRepository = memberRepository;
+      this.boardRepository = boardRepository;
+    }
 
+    @Transactional
+    public static List<Board> getAllBoard() {
+        return boardRepository.findAll();
+    }
+
+    @Transactional
+    public BoardResponseDto getBoardById(Long id) {
+        Board board = BoardRepository.findById(id)
+            .orElseThrow(() -> new IllegalArgumentException("잘못된 Board ID 입니다."));
+        return new BoardResponseDto(board);
+    }
+
+    @Transactional
+    public Board createBoard(BoardRequestDto board) {
+        return boardRepository.save(board.toEntity());
+    }
+
+    @Transactional
+    public static Board updateBoard(Long id, BoardRequestDto updateBoard) {
+        Board board = boardRepository.findById(id)
+            .orElseThrow(() -> new IllegalArgumentException("잘못된 Board ID 입니다."));
+        board.update(updateBoard.getTitle(), board.getContents());
+
+        return boardRepository.save(board);
+    }
+
+    @Transactional
+    public static void deleteBoard(Long id) {
+        boardRepository.deleteById(id);
     }
 }
