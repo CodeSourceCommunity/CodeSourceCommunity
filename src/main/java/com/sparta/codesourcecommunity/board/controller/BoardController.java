@@ -31,7 +31,7 @@ public class BoardController {
   }
 
   @GetMapping("/{boardId}")
-  public BoardResponseDto getBoardById(@PathVariable Long id) {
+  public BoardResponseDto getBoardById(@PathVariable Long id, @PathVariable String boardId) {
     return boardService.getBoardById(id);
   }
 
@@ -41,12 +41,13 @@ public class BoardController {
   }
 
   @PatchMapping("/{boardId}")
-  public Board updateBoard(@PathVariable Long id, @RequestBody BoardRequestDto updateBoard) {
+  public Board updateBoard(@PathVariable Long id, @RequestBody BoardRequestDto updateBoard,
+      @PathVariable String boardId) {
     return boardService.updateBoard(id, updateBoard);
   }
 
   @DeleteMapping("/{boardId}")
-  public void deleteBoard(@PathVariable Long id) {
+  public void deleteBoard(@PathVariable Long id, @PathVariable String boardId) {
     boardService.deleteBoard(id);
   }
 }
