@@ -4,13 +4,7 @@ import com.sparta.codesourcecommunity.board.dto.BoardRequestDto;
 import com.sparta.codesourcecommunity.board.dto.BoardResponseDto;
 import com.sparta.codesourcecommunity.board.entity.Board;
 import com.sparta.codesourcecommunity.board.service.BoardService;
-import com.sparta.codesourcecommunity.common.CommonResponseDto;
-import com.sparta.codesourcecommunity.member.dto.MemberRequestDto;
-import com.sparta.codesourcecommunity.security.MemberDetailsImpl;
-import jakarta.validation.Valid;
 import java.util.List;
-import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -30,13 +24,10 @@ public class BoardController {
     this.boardService = boardService;
   }
 
-  @PatchMapping("/member/introduce")
-  public ResponseEntity<CommonResponseDto> modifyIndtroduce(@AuthenticationPrincipal MemberDetailsImpl memberDetails, @Valid @RequestBody MemberRequestDto memberRequestDto) {
 
-  }
   @GetMapping
   public List<Board> getAllBoard() {
-    return BoardService.getAllBoard();
+    return boardService.getAllBoard();
   }
 
   @GetMapping("/{boardId}")
@@ -51,11 +42,11 @@ public class BoardController {
 
   @PatchMapping("/{boardId}")
   public Board updateBoard(@PathVariable Long id, @RequestBody BoardRequestDto updateBoard) {
-    return BoardService.updateBoard(id, updateBoard);
+    return boardService.updateBoard(id, updateBoard);
   }
 
   @DeleteMapping("/{boardId}")
   public void deleteBoard(@PathVariable Long id) {
-    BoardService.deleteBoard(id);
+    boardService.deleteBoard(id);
   }
 }

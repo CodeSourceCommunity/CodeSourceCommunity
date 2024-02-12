@@ -16,16 +16,16 @@ public class LikeController {
 
   private final LikeService likeService;
 
-  @PostMapping
-  public ResponseResult<?> insert(@RequestBody @Valid LikeRequestDTO likeRequestDTO) {
-    likeService.insert(likeRequestDTO);
-    return success(null);
-  }
-
-  @DeleteMapping
-  public ResponseResult<?> delete(@RequestBody @Valid LikeRequestDTO likeRequestDTO) {
-    likeService.delete(likeRequestDTO);
-    return success(null);
-  }
+//  @PostMapping
+//  public ResponseResult<?> insert(@RequestBody @Valid LikeRequestDTO likeRequestDTO) {
+//    likeService.insert(likeRequestDTO);
+//    return success(null);
+//  }
+//
+//  @DeleteMapping
+//  public ResponseResult<?> delete(@RequestBody @Valid LikeRequestDTO likeRequestDTO) {
+//    likeService.delete(likeRequestDTO);
+//    return success(null);
+//  }
 
 }

@@ -21,13 +21,13 @@ public class BoardService {
     }
 
     @Transactional
-    public static List<Board> getAllBoard() {
+    public List<Board> getAllBoard() {
         return boardRepository.findAll();
     }
 
     @Transactional
     public BoardResponseDto getBoardById(Long id) {
-        Board board = BoardRepository.findById(id)
+        Board board = boardRepository.findById(id)
             .orElseThrow(() -> new IllegalArgumentException("잘못된 Board ID 입니다."));
         return new BoardResponseDto(board);
     }
@@ -38,7 +38,7 @@ public class BoardService {
     }
 
     @Transactional
-    public static Board updateBoard(Long id, BoardRequestDto updateBoard) {
+    public Board updateBoard(Long id, BoardRequestDto updateBoard) {
         Board board = boardRepository.findById(id)
             .orElseThrow(() -> new IllegalArgumentException("잘못된 Board ID 입니다."));
         board.update(updateBoard.getTitle(), board.getContents());
@@ -47,7 +47,7 @@ public class BoardService {
     }
 
     @Transactional
-    public static void deleteBoard(Long id) {
+    public void deleteBoard(Long id) {
         boardRepository.deleteById(id);
     }
 }
