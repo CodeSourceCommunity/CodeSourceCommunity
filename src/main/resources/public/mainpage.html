@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>데이터를 li 형태로 표시하기</title>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <style>
+    /* 헤더의 스타일링 */
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px;
+      background-color: #333;
+      color: #fff;
+    }
+
+    /* 로그인, 회원가입 버튼 스타일링 */
+    .btn {
+      padding: 5px 10px;
+      background-color: #fff;
+      color: #333;
+      text-decoration: none;
+      border-radius: 5px;
+    }
+  </style>
+  <script>
+    $(document).ready(function() {
+      $.ajax({
+        url: "",
+        type: "GET",
+        success: function(response) {
+          // 요청이 성공하면 실행할 작업
+          console.log("GET 요청이 성공하였습니다.");
+          console.log("서버로부터의 응답:", response);
+
+          // <ul> 요소 선택
+          var ul = $("<ul>");
+
+          // 받아온 데이터를 반복하면서 <li> 생성하여 <ul>에 추가
+          response.forEach(function(item) {
+            var li = $("<li>").text(item.text); // 데이터를 텍스트로 추가
+            // 클릭 이벤트 추가하여 해당 페이지로 이동하며, 선택한 아이템의 boardId 값을 쿼리 문자열로 전달
+            li.click(function() {
+              window.location.href = "your_page_url_here?boardId=" + item.boardId; // 각 항목에 해당하는 페이지 URL로 변경하고, 선택한 아이템의 boardId 값을 쿼리 문자열로 전달
+            });
+            ul.append(li); // <li>를 <ul>에 추가
+          });
+
+          // <ul>을 페이지에 추가
+          $("body").append(ul);
+        },
+        error: function(xhr, status, error) {
+          // 요청이 실패하면 실행할 작업
+          console.error("GET 요청이 실패하였습니다.");
+          console.error("에러:", error);
+        }
+      });
+    });
+  </script>
+</head>
+<body>
+<header>
+  <div>사이트명</div>
+  <div>
+    <a href="index.html" class="btn">로그아웃</a>
+    <a href="createBoard.html" class="btn">게시글 작성</a>
+    <a href="mypage.html" class="btn">내 정보</a>
+  </div>
+</header>
+</body>
+</html>

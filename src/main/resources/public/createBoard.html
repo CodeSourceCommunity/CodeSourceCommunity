@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>게시글 작성 페이지</title>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+</head>
+<body>
+<h2>게시글 작성</h2>
+
+<form id="postForm">
+  <div>
+    <label for="title">제목:</label>
+    <input type="text" id="title" name="title">
+  </div>
+  <div>
+    <label for="subtitle">부제목(에러 메시지):</label>
+    <input type="text" id="subtitle" name="subtitle">
+  </div>
+  <div>
+    <label for="content">내용:</label>
+    <textarea id="content" name="content"></textarea>
+  </div>
+  <button type="submit">작성</button>
+</form>
+
+<script>
+  $(document).ready(function() {
+    // 쿠키에서 토큰을 가져오는 함수
+    function getCookie(name) {
+      var value = "; " + document.cookie;
+      var parts = value.split("; " + name + "=");
+      if (parts.length === 2) return parts.pop().split(";").shift();
+    }
+
+    var token = getCookie("your_token_cookie_name"); // 여기에 쿠키의 이름을 입력하세요
+
+    $('#postForm').submit(function(event) {
+      event.preventDefault(); // 기본 폼 제출 동작 방지
+
+      var formData = {
+        title: $('#title').val(),
+        subtitle: $('#subtitle').val(),
+        content: $('#content').val()
+      };
+
+      // AJAX 요청을 보내서 게시글 작성
+      $.ajax({
+        type: 'POST',
+        url: '/posts/create',
+        headers: {
+          'Authorization': 'Bearer ' + token // 토큰을 헤더에 포함시킵니다.
+        },
+        contentType: 'application/json',
+        data: JSON.stringify(formData),
+        success: function(response) {
+          alert('게시글이 작성되었습니다: ' + response.message);
+          // 게시글 작성 성공 후 다른 작업을 수행할 수 있습니다.
+        },
+        error: function(xhr, status, error) {
+          alert('게시글 작성에 실패했습니다: ' + xhr.responseText);
+          // 게시글 작성 실패 시 처리할 내용을 정의할 수 있습니다.
+        }
+      });
+    });
+  });
+</script>
+</body>
+</html>
