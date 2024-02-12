@@ -45,7 +45,9 @@ public class MemberController {
     public ResponseEntity<CommonResponseDto> AuthCheck(
         @Valid @RequestBody EmailCheckDto emailCheckDto) {
         if (emailService.CheckAuthNum(emailCheckDto.getEmail(), emailCheckDto.getAuthNum())) {
+            memberService.signupComplete(emailCheckDto.getEmail());
             emailService.delete(emailCheckDto.getEmail());
+            memberService.delete(emailCheckDto.getEmail());
             return ResponseEntity.ok()
                 .body(new CommonResponseDto("회원가입 완료", HttpStatus.OK.value()));
         } else {
