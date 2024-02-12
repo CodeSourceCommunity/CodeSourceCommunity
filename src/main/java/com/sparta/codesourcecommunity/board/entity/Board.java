@@ -40,10 +40,6 @@ public class Board {
     @JoinColumn(name = "memberId")
     private Member member;
 
-    @ManyToOne
-    @JoinColumn(name = "boardId")
-    private Board board;
-
     @OneToMany(mappedBy = "board")
     private List<Comment> comment = new ArrayList<>();
 
