@@ -41,7 +41,7 @@ public class MemberController {
             .body(new CommonResponseDto("이메일 인증을 완료하세요.", HttpStatus.CREATED.value()));
     }
 
-    @PostMapping("/mailAuthCheck")
+    @PostMapping("/emailAuthCheck")
     public ResponseEntity<CommonResponseDto> AuthCheck(
         @Valid @RequestBody EmailCheckDto emailCheckDto) {
         if (emailService.CheckAuthNum(emailCheckDto.getEmail(), emailCheckDto.getAuthNum())) {
