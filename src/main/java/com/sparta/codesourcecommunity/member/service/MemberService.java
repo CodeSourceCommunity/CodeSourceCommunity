@@ -44,8 +44,10 @@ public class MemberService {
     public void signupComplete(String email){
         MemberBeforeEmailAuth memberBeforeEmailAuth = memberBeforeAuthRepository.findByEmail(email).orElseThrow(NotFoundMemberException::new);
 
+        String password = passwordEncoder.encode(memberBeforeEmailAuth.getPassword());
+
         Member member = new Member(memberBeforeEmailAuth.getEmail(),
-            memberBeforeEmailAuth.getNickname(), memberBeforeEmailAuth.getPassword(),
+            memberBeforeEmailAuth.getNickname(), password,
             memberBeforeEmailAuth.getIntroduce());
 
         if(memberRepository.findByEmail(member.getEmail()).isPresent()){

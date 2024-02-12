@@ -3,7 +3,6 @@ package com.sparta.codesourcecommunity.member.service;
 
 import com.sparta.codesourcecommunity.member.entity.Email;
 import com.sparta.codesourcecommunity.member.repository.EmailRepository;
-import com.sparta.codesourcecommunity.member.repository.MemberRepository;
 import java.util.Random;
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
@@ -19,7 +18,6 @@ public class EmailService {
 
     private final JavaMailSender mailSender;
     private final EmailRepository emailRepository;
-    private final MemberRepository memberRepository;
     private int authNumber;
 
     //임의의 6자리 양수를 반환합니다.
