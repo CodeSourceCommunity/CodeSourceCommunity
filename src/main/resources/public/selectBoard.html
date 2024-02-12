@@ -28,20 +28,15 @@
 
     // 서버로부터 해당 게시글의 상세 정보를 가져오는 AJAX 요청
     $.ajax({
-      url: "/boards/" + boardId, // 해당 게시글의 상세 정보를 가져오는 엔드포인트로 URL 구성
+      url: "/boards/" + boardId,
       type: "GET",
       success: function(response) {
-        // 요청이 성공하면 실행할 작업
-        console.log("게시글 상세 정보를 가져왔습니다:", response);
-
-        // 가져온 게시글의 상세 정보를 화면에 표시
         var boardDetailDiv = $("#boardDetail");
         boardDetailDiv.append("<p><strong>제목:</strong> " + response.title + "</p>");
         boardDetailDiv.append("<p><strong>내용:</strong> " + response.content + "</p>");
         boardDetailDiv.append("<p><strong>작성자:</strong> " + response.author + "</p>");
       },
       error: function(xhr, status, error) {
-        // 요청이 실패하면 실행할 작업
         console.error("게시글 상세 정보를 가져오는데 실패하였습니다.");
         console.error("에러:", error);
       }
@@ -49,26 +44,43 @@
 
     // 수정하기 버튼 클릭 시 수정 페이지로 이동
     $("#editButton").click(function() {
-      window.location.href = "editPage.html?boardId=" + boardId; // 수정 페이지로 이동하며, boardId를 쿼리 문자열로 전달
+      window.location.href = "editPage.html?boardId=" + boardId;
     });
 
     // 전체 댓글 조회
     $.ajax({
-      url: "/comments?boardId=" + boardId, // 해당 게시글의 댓글을 가져오는 엔드포인트로 URL 구성
+      url: "/comments?boardId=" + boardId,
       type: "GET",
       success: function(response) {
-        // 요청이 성공하면 실행할 작업
-        console.log("전체 댓글을 가져왔습니다:", response);
-
-        // 가져온 전체 댓글을 화면에 표시
         var commentList = $("#commentList");
         response.forEach(function(comment) {
-          var li = $("<li>").text(comment.text); // 댓글 내용으로 텍스트 추가
-          commentList.append(li); // <li>를 <ul>에 추가
+          var li = $("<li>").text(comment.text);
+          var replyButton = $("<button>").text("대댓글 보기"); // 대댓글 보기 버튼 생성
+          replyButton.click(function() {
+            var replyList = $("<ul>"); // 대댓글을 표시할 리스트 생성
+            // 대댓글을 가져오는 AJAX 요청
+            $.ajax({
+              url: "/replies?commentId=" + comment.id, // 해당 댓글의 대댓글을 가져오는 엔드포인트로 URL 구성
+              type: "GET",
+              success: function(replies) {
+                // 요청이 성공하면 실행할 작업
+                replies.forEach(function(reply) {
+                  replyList.append($("<li>").text(reply.text));
+                });
+                // 대댓글 리스트를 보여줍니다.
+                $(replyButton).after(replyList);
+              },
+              error: function(xhr, status, error) {
+                console.error("대댓글을 가져오는데 실패하였습니다.");
+                console.error("에러:", error);
+              }
+            });
+          });
+          li.append(replyButton); // 댓글 옆에 대댓글 보기 버튼 추가
+          commentList.append(li);
         });
       },
       error: function(xhr, status, error) {
-        // 요청이 실패하면 실행할 작업
         console.error("전체 댓글을 가져오는데 실패하였습니다.");
         console.error("에러:", error);
       }

@@ -17,23 +17,11 @@
 </div>
 
 <script>
-  $(document).ready(function() {
-    // 쿠키에서 토큰을 가져오는 함수
-    function getCookie(name) {
-      var value = "; " + document.cookie;
-      var parts = value.split("; " + name + "=");
-      if (parts.length === 2) return parts.pop().split(";").shift();
-    }
-
-    var token = getCookie("your_token_cookie_name"); // 여기에 쿠키의 이름을 입력하세요
-
-    // 페이지 로드 시 토큰을 사용하여 회원 정보를 가져와서 화면에 표시
+      // 페이지 로드 시 토큰을 사용하여 회원 정보를 가져와서 화면에 표시
     $.ajax({
       type: 'GET',
-      url: '/members/info',
-      headers: {
-        'Authorization': 'Bearer ' + token // 토큰을 헤더에 포함시킵니다.
-      },
+      url: '/members/profile',
+
       success: function(response) {
         displayMemberInfo(response); // 가져온 회원 정보를 화면에 표시
       },
@@ -48,7 +36,6 @@
       var listItem = $('<li>').text('사용자명: ' + member.email + ', nickname: ' + member.nickname + ', 소개: ' + member.introduce);
       $('#memberInfo ul').append(listItem);
     }
-  });
 </script>
 </body>
 </html>
