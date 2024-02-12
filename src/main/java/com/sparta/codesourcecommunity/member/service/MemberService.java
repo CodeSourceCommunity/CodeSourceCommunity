@@ -28,6 +28,7 @@ public class MemberService {
     private final PasswordEncoder passwordEncoder;
     private final EmailService emailService;
 
+    // 회원가입 양식대로 입력 후 이메일 인증 요청
     public void signup(MemberRequestDto memberRequestDto) {
         if (memberBeforeAuthRepository.findByEmail(memberRequestDto.getEmail()).isPresent()) {
             throw new DuplicateMemberException();
@@ -39,6 +40,7 @@ public class MemberService {
                 memberRequestDto.getPassword(), memberRequestDto.getIntroduce()));
     }
 
+    // 이메일 인증이 성공적으로 완료되었을 때 실행
     public void signupComplete(String email){
         MemberBeforeEmailAuth memberBeforeEmailAuth = memberBeforeAuthRepository.findByEmail(email).orElseThrow(NotFoundMemberException::new);
 
@@ -54,6 +56,7 @@ public class MemberService {
     }
 
 
+    // 이메일과 비밀번호를 입력받아 회원임을 검증
     public void login(MemberLoginRequestDto memberLoginRequestDto) {
         String email = memberLoginRequestDto.getEmail();
         String password = memberLoginRequestDto.getPassword();
