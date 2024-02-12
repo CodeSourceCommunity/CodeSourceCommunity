@@ -60,4 +60,8 @@ public class Member {
     public void UpdatePassword(String changePassword) {
         this.password = changePassword;
     }
+
+    public void UpdateIntroduce(String introduce) {
+        this.introduce = introduce;
+    }
 }
