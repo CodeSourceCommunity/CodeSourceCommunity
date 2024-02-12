@@ -23,19 +23,19 @@ public class MemberService {
 
     private final MemberRepository memberRepository;
     private final PasswordEncoder passwordEncoder;
+    private final EmailService emailService;
 
     public void signup(MemberRequestDto memberRequestDto) {
-        String email = memberRequestDto.getEmail();
-        String nickname = memberRequestDto.getNickname();
-        String password = passwordEncoder.encode(memberRequestDto.getPassword());
-        String introduce = memberRequestDto.getIntroduce();
-
-        if (memberRepository.findByEmail(email).isPresent()) {
+        if (memberRepository.findByEmail(memberRequestDto.getEmail()).isPresent()) {
             throw new DuplicateMemberException();
         }
 
-        Member member = new Member(email, nickname, password, introduce);
-        memberRepository.save(member);
+        emailService.joinEmail(memberRequestDto.getEmail());
+        memberRepository.save(
+            new Member(memberRequestDto.getEmail(), memberRequestDto.getNickname(),
+                memberRequestDto.getPassword(), memberRequestDto.getIntroduce()));
+        new Member(memberRequestDto.getEmail(), memberRequestDto.getNickname(),
+            memberRequestDto.getPassword(), memberRequestDto.getIntroduce());
     }
 
 
@@ -99,7 +99,14 @@ public class MemberService {
     }
 
     public MemberResponseDto getProfile(MemberDetailsImpl memberDetails) {
-        Member member = memberRepository.findById(memberDetails.getMember().getMemberId()).orElseThrow(NotFoundMemberException::new);
-        return new MemberResponseDto(member.getEmail(), member.getNickname(), member.getIntroduce());
+        Member member = memberRepository.findById(memberDetails.getMember().getMemberId())
+            .orElseThrow(NotFoundMemberException::new);
+        return new MemberResponseDto(member.getEmail(), member.getNickname(),
+            member.getIntroduce());
+    }
+
+    @Transactional
+    public void delete(String email) {
+        memberRepository.deleteByEmail(email);
     }
 }
