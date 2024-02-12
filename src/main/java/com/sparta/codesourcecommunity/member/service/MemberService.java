@@ -5,11 +5,13 @@ import com.sparta.codesourcecommunity.member.dto.MemberRequestDto;
 import com.sparta.codesourcecommunity.member.dto.MemberResponseDto;
 import com.sparta.codesourcecommunity.member.dto.ModifyPasswordDto;
 import com.sparta.codesourcecommunity.member.entity.Member;
+import com.sparta.codesourcecommunity.member.entity.MemberBeforeEmailAuth;
 import com.sparta.codesourcecommunity.member.exception.DuplicateMemberException;
 import com.sparta.codesourcecommunity.member.exception.NotFoundMemberException;
 import com.sparta.codesourcecommunity.member.exception.NotMatchPasswordException;
 import com.sparta.codesourcecommunity.member.exception.PasswordMismatchException;
 import com.sparta.codesourcecommunity.member.exception.SamePasswordException;
+import com.sparta.codesourcecommunity.member.repository.MemberBeforeAuthRepository;
 import com.sparta.codesourcecommunity.member.repository.MemberRepository;
 import com.sparta.codesourcecommunity.security.MemberDetailsImpl;
 import lombok.RequiredArgsConstructor;
@@ -22,20 +24,33 @@ import org.springframework.transaction.annotation.Transactional;
 public class MemberService {
 
     private final MemberRepository memberRepository;
+    private final MemberBeforeAuthRepository memberBeforeAuthRepository;
     private final PasswordEncoder passwordEncoder;
     private final EmailService emailService;
 
     public void signup(MemberRequestDto memberRequestDto) {
-        if (memberRepository.findByEmail(memberRequestDto.getEmail()).isPresent()) {
+        if (memberBeforeAuthRepository.findByEmail(memberRequestDto.getEmail()).isPresent()) {
             throw new DuplicateMemberException();
         }
 
         emailService.joinEmail(memberRequestDto.getEmail());
-        memberRepository.save(
-            new Member(memberRequestDto.getEmail(), memberRequestDto.getNickname(),
+        memberBeforeAuthRepository.save(
+            new MemberBeforeEmailAuth(memberRequestDto.getEmail(), memberRequestDto.getNickname(),
                 memberRequestDto.getPassword(), memberRequestDto.getIntroduce()));
-        new Member(memberRequestDto.getEmail(), memberRequestDto.getNickname(),
-            memberRequestDto.getPassword(), memberRequestDto.getIntroduce());
+    }
+
+    public void signupComplete(String email){
+        MemberBeforeEmailAuth memberBeforeEmailAuth = memberBeforeAuthRepository.findByEmail(email).orElseThrow(NotFoundMemberException::new);
+
+        Member member = new Member(memberBeforeEmailAuth.getEmail(),
+            memberBeforeEmailAuth.getNickname(), memberBeforeEmailAuth.getPassword(),
+            memberBeforeEmailAuth.getIntroduce());
+
+        if(memberRepository.findByEmail(member.getEmail()).isPresent()){
+            throw new DuplicateMemberException();
+        }
+
+        memberRepository.save(member);
     }
 
 
@@ -107,6 +122,6 @@ public class MemberService {
 
     @Transactional
     public void delete(String email) {
-        memberRepository.deleteByEmail(email);
+        memberBeforeAuthRepository.deleteByEmail(email);
     }
 }
