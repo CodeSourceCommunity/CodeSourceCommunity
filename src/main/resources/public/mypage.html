@@ -11,31 +11,117 @@
 <!-- 회원 정보를 보여줄 곳 -->
 <div id="memberInfo">
   <h3>회원 정보</h3>
-  <ul>
+  <ul id="userInfoList">
     <!-- 여기에 회원 정보를 동적으로 추가할 것입니다. -->
   </ul>
 </div>
 
-<script>
-      // 페이지 로드 시 토큰을 사용하여 회원 정보를 가져와서 화면에 표시
-    $.ajax({
-      type: 'GET',
-      url: '/members/profile',
+<!-- 닉네임 수정 버튼 -->
+<button id="editNicknameBtn">닉네임 수정</button>
+<!-- 소개글 수정 버튼 -->
+<button id="editIntroBtn">소개글 수정</button>
+<!-- 패스워드 수정 버튼 -->
+<button id="editPasswordBtn">패스워드 수정</button>
 
+<script>
+  // 페이지 로드 시 토큰을 사용하여 회원 정보를 가져와서 화면에 표시
+  $.ajax({
+    type: 'GET',
+    url: '/members/profile',
+
+    success: function(response) {
+      displayMemberInfo(response); // 가져온 회원 정보를 화면에 표시
+    },
+    error: function(xhr, status, error) {
+      alert('회원 정보를 가져오는데 실패했습니다: ' + xhr.responseText);
+    }
+  });
+
+  // 회원 정보를 화면에 표시하는 함수
+  function displayMemberInfo(member) {
+    // 회원 정보를 동적으로 추가
+    var userInfoList = $('#userInfoList');
+
+    // 사용자명을 한 줄에 표시
+    var userEmail = $('<li>').text('사용자명: ' + member.email);
+    userInfoList.append(userEmail);
+
+    // 닉네임을 한 줄에 표시
+    var userNickname = $('<li>').text('닉네임: ' + member.nickname);
+    userInfoList.append(userNickname);
+
+    // 소개를 한 줄에 표시
+    var userIntro = $('<li>').text('소개: ' + member.introduce);
+    userInfoList.append(userIntro);
+
+    // 패스워드를 한 줄에 표시
+    var userPassword = $('<li>').text('패스워드: ********'); // 보안상의 이유로 실제 패스워드는 가려서 표시
+    userInfoList.append(userPassword);
+  }
+
+  // 닉네임 수정 버튼 클릭 이벤트
+  $('#editNicknameBtn').click(function() {
+    var email = ''; // email 변수에 해당 사용자의 이메일 값을 설정해야 합니다.
+    var newNickname = prompt('새로운 닉네임을 입력하세요:');
+    var password = prompt('패스워드를 입력하세요:'); // 사용자로부터 패스워드 입력 받음
+    var introduce = ''; // 소개글 변수에 해당 사용자의 소개글을 설정해야 합니다.
+
+    // 수정할 데이터를 JSON 형식으로 변환하여 전송
+    $.ajax({
+      type: 'PATCH',
+      url: '/members/nickname',
+      contentType: 'application/json',
+      data: JSON.stringify({ email: email, nickname: newNickname, password: password, introduce: introduce }), // 닉네임과 패스워드를 함께 서버에 전송
       success: function(response) {
-        displayMemberInfo(response); // 가져온 회원 정보를 화면에 표시
+        $('#userInfoList li:eq(1)').text('닉네임: ' + newNickname);
       },
       error: function(xhr, status, error) {
-        alert('회원 정보를 가져오는데 실패했습니다: ' + xhr.responseText);
+        alert('닉네임 수정에 실패했습니다: ' + xhr.responseText);
       }
     });
+  });
 
-    // 회원 정보를 화면에 표시하는 함수
-    function displayMemberInfo(member) {
-      // 회원 정보를 동적으로 추가
-      var listItem = $('<li>').text('사용자명: ' + member.email + ', nickname: ' + member.nickname + ', 소개: ' + member.introduce);
-      $('#memberInfo ul').append(listItem);
-    }
+
+  // 소개글 수정 버튼 클릭 이벤트
+  $('#editIntroBtn').click(function() {
+    var email = ''; // email 변수에 해당 사용자의 이메일 값을 설정해야 합니다.
+    var nickname = 'dumidata';
+    var newIntro = prompt('새로운 소개글을 입력하세요:');
+    var password = prompt('패스워드를 입력하세요:'); // 사용자로부터 패스워드 입력 받음
+
+    $.ajax({
+      type: 'PATCH',
+      url: '/members/introduce',
+      contentType: 'application/json',
+      data: JSON.stringify({ email: email, nickname: nickname, password: password, introduce: newIntro }), // 닉네임과 패스워드를 함께 서버에 전송
+      success: function(response) {
+        $('#userInfoList li:eq(2)').text('소개: ' + newIntro);
+      },
+      error: function(xhr, status, error) {
+        alert('소개글 수정에 실패했습니다: ' + xhr.responseText);
+      }
+    });
+  });
+
+  // 패스워드 수정 버튼 클릭 이벤트
+  $('#editPasswordBtn').click(function() {
+    var password = prompt('기존 패스워드를 입력하세요:');
+    var changePassword = prompt('새로운 패스워드를 입력하세요:');
+    var changePasswordConfirm = prompt('새로운 패스워드를 입력하세요:');
+
+    $.ajax({
+      type: 'PATCH',
+      url: '/members/password',
+      contentType: 'application/json',
+      data: JSON.stringify({ password: password, changePassword: changePassword, changePasswordConfirm: changePasswordConfirm}),
+      success: function(response) {
+        alert('패스워드가 성공적으로 수정되었습니다.');
+      },
+      error: function(xhr, status, error) {
+        alert('패스워드 수정에 실패했습니다: ' + xhr.responseText);
+      }
+    });
+  });
 </script>
 </body>
 </html>
