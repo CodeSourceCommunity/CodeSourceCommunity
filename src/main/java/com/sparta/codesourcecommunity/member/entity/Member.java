@@ -36,14 +36,14 @@ public class Member {
     @Column
     private String introduce;
 
-    @OneToMany(mappedBy = "member", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Board> board = new ArrayList<>();
-    @OneToMany(mappedBy = "member", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Comment> comment = new ArrayList<>();
-    @OneToMany(mappedBy = "member", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<ReComment> reComment = new ArrayList<>();
-    @OneToMany(mappedBy = "member", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Like> like = new ArrayList<>();
+//    @OneToMany(mappedBy = "member", cascade = CascadeType.ALL, orphanRemoval = true)
+//    private List<Board> board = new ArrayList<>();
+//    @OneToMany(mappedBy = "member", cascade = CascadeType.ALL, orphanRemoval = true)
+//    private List<Comment> comment = new ArrayList<>();
+//    @OneToMany(mappedBy = "member", cascade = CascadeType.ALL, orphanRemoval = true)
+//    private List<ReComment> reComment = new ArrayList<>();
+//    @OneToMany(mappedBy = "member", cascade = CascadeType.ALL, orphanRemoval = true)
+//    private List<Like> like = new ArrayList<>();
 
 
     public Member(String email, String nickname, String password, String introduce) {

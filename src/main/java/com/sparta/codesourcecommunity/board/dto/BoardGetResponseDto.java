@@ -5,16 +5,25 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.ToString;
+import lombok.RequiredArgsConstructor;
 
 @Getter
 
-public class BoardResponseDto {
+
+public class BoardGetResponseDto {
+  private Long boardId;
   private String title;
   private String contents;
+  private String nickname;
 
-  public BoardResponseDto(Board board) {
+  public BoardGetResponseDto(Board board) {
+    this.boardId = board.getBoardId();
     this.title = board.getTitle();
     this.contents = board.getContents();
+    this.nickname = board.getMember().getNickname();
   }
+
+
+
+
 }

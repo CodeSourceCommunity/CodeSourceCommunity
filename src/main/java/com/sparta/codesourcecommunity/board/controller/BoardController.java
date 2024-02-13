@@ -1,12 +1,11 @@
 package com.sparta.codesourcecommunity.board.controller;
 
+import com.sparta.codesourcecommunity.board.dto.BoardGetResponseDto;
 import com.sparta.codesourcecommunity.board.dto.BoardRequestDto;
 import com.sparta.codesourcecommunity.board.dto.BoardResponseDto;
 import com.sparta.codesourcecommunity.board.entity.Board;
-import com.sparta.codesourcecommunity.board.repository.BoardRepository;
 import com.sparta.codesourcecommunity.board.service.BoardService;
 import java.util.List;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -20,25 +19,26 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/boards")
 public class BoardController {
 
-  @Autowired
   private final BoardService boardService;
-  @Autowired
-  private BoardRepository boardRepository;
+
+
 
   public BoardController(BoardService boardService) {
     this.boardService = boardService;
   }
 
+  @GetMapping("/{boardId}")
+  public BoardGetResponseDto getBoardById(@PathVariable Long boardId) {
+    return boardService.getBoardById(boardId);
+  }
+
 
   @GetMapping
-  public List<Board> getAllBoard() {
+  public List<BoardGetResponseDto> getAllBoard() {
     return boardService.getAllBoard();
   }
 
-  @GetMapping("/{boardId}")
-  public BoardResponseDto getBoardById(@PathVariable Long id) {
-    return boardService.getBoardById(id);
-  }
+
 
   @PostMapping
   public Board createBoard(@RequestBody BoardRequestDto board) {
@@ -46,13 +46,12 @@ public class BoardController {
   }
 
   @PatchMapping("/{boardId}")
-  public Board updateBoard(@PathVariable Long id, @RequestBody BoardRequestDto updateBoard,
-      @PathVariable String boardId) {
-    return boardService.updateBoard(id, updateBoard);
+  public BoardResponseDto updateBoard(@PathVariable Long boardId, @RequestBody BoardRequestDto updateBoard) {
+    return boardService.updateBoard(boardId, updateBoard);
   }
 
   @DeleteMapping("/{boardId}")
-  public void deleteBoard(@PathVariable Long id) {
-    boardService.deleteBoard(id);
+  public void deleteBoard(@PathVariable Long boardId) {
+    boardService.deleteBoard(boardId);
   }
 }

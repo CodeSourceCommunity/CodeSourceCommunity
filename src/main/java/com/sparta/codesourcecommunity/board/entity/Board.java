@@ -1,5 +1,6 @@
 package com.sparta.codesourcecommunity.board.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.sparta.codesourcecommunity.comment.entity.Comment;
 import com.sparta.codesourcecommunity.like.entity.Like;
 import com.sparta.codesourcecommunity.member.entity.Member;
@@ -49,9 +50,9 @@ public class Board {
     @OneToMany(mappedBy = "board")
     private List<Like> like = new ArrayList<>();
 
-    @ColumnDefault("0")
-    @Column(name = "view_count",nullable = false)
-    private Integer viewCount;
+//    @ColumnDefault("0")
+//    @Column(name = "view_count",nullable = false)
+//    private Integer viewCount;
 
     @Builder
     public Board(String title, String contents) {
