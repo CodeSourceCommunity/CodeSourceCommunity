@@ -13,7 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class BoardService {
 
     private final MemberRepository memberRepository;
-    private static BoardRepository boardRepository;
+    private final BoardRepository boardRepository;
 
     public BoardService(MemberRepository memberRepository, BoardRepository boardRepository) {
       this.memberRepository = memberRepository;
@@ -21,7 +21,8 @@ public class BoardService {
     }
 
     @Transactional
-    public List<Board> getAllBoard() {
+    public List<Board> getAllBoard()
+    {
         return boardRepository.findAll();
     }
 
@@ -51,3 +52,4 @@ public class BoardService {
         boardRepository.deleteById(id);
     }
 }
+

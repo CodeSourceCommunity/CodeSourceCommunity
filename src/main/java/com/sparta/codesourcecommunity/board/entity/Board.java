@@ -15,11 +15,14 @@ import jakarta.persistence.Table;
 import java.util.ArrayList;
 import java.util.List;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.ColumnDefault;
 
 @Entity
+@Data
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
@@ -50,6 +53,7 @@ public class Board {
     @Column(name = "view_count",nullable = false)
     private Integer viewCount;
 
+    @Builder
     public Board(String title, String contents) {
         this.title = title;
         this.contents = contents;

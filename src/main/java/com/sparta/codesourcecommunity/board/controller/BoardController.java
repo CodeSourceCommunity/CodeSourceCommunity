@@ -3,8 +3,10 @@ package com.sparta.codesourcecommunity.board.controller;
 import com.sparta.codesourcecommunity.board.dto.BoardRequestDto;
 import com.sparta.codesourcecommunity.board.dto.BoardResponseDto;
 import com.sparta.codesourcecommunity.board.entity.Board;
+import com.sparta.codesourcecommunity.board.repository.BoardRepository;
 import com.sparta.codesourcecommunity.board.service.BoardService;
 import java.util.List;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -15,10 +17,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/board")
+@RequestMapping("/boards")
 public class BoardController {
 
+  @Autowired
   private final BoardService boardService;
+  @Autowired
+  private BoardRepository boardRepository;
 
   public BoardController(BoardService boardService) {
     this.boardService = boardService;
@@ -31,7 +36,7 @@ public class BoardController {
   }
 
   @GetMapping("/{boardId}")
-  public BoardResponseDto getBoardById(@PathVariable Long id, @PathVariable String boardId) {
+  public BoardResponseDto getBoardById(@PathVariable Long id) {
     return boardService.getBoardById(id);
   }
 
@@ -47,7 +52,7 @@ public class BoardController {
   }
 
   @DeleteMapping("/{boardId}")
-  public void deleteBoard(@PathVariable Long id, @PathVariable String boardId) {
+  public void deleteBoard(@PathVariable Long id) {
     boardService.deleteBoard(id);
   }
 }
