@@ -1,10 +1,10 @@
 package com.sparta.codesourcecommunity.member.dto;
 
 import lombok.Getter;
-import lombok.Setter;
 
 @Getter
 public class MemberResponseDto {
+
     private String email;
     private String nickname;
     private String introduce;

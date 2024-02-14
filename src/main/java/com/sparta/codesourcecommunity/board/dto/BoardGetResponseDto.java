@@ -5,6 +5,7 @@ import lombok.Getter;
 
 @Getter
 public class BoardGetResponseDto {
+
     private Long boardId;
     private String title;
     private String subtitle;

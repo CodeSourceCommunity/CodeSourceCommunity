@@ -14,6 +14,7 @@ import lombok.Setter;
 @AllArgsConstructor
 @JsonInclude(Include.NON_NULL) //null은 json으로 parsing 하지 않음!
 public class CommonResponseDto {
+
     private String msg;
     private Integer statusCode;
 }

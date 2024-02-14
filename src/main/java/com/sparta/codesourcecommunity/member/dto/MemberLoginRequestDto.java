@@ -5,6 +5,7 @@ import lombok.Getter;
 
 @Getter
 public class MemberLoginRequestDto {
+
     @Email(message = "email 형식으로 입력하세요.")
     private String email;
     private String password;

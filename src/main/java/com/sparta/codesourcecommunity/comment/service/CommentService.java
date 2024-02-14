@@ -41,7 +41,8 @@ public class CommentService {
         List<CommentResponseDto> commentResponseDtos = new ArrayList<>();
 
         for (Comment comment : commentList) {
-            Member member = memberRepository.findById(comment.getMember().getMemberId()).orElseThrow();
+            Member member = memberRepository.findById(comment.getMember().getMemberId())
+                .orElseThrow();
             commentResponseDtos.add(new CommentResponseDto(comment, member.getNickname()));
         }
 

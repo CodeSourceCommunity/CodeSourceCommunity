@@ -46,7 +46,7 @@ public class CommentController {
         @Valid @RequestBody CommentRequestDto commentRequestDto,
         @AuthenticationPrincipal MemberDetailsImpl memberDetails) {
 
-        return commentService.updateComment(commentId,commentRequestDto, memberDetails);
+        return commentService.updateComment(commentId, commentRequestDto, memberDetails);
     }
 
     @DeleteMapping("/{commentId}")

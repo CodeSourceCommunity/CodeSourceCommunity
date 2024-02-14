@@ -3,7 +3,6 @@ package com.sparta.codesourcecommunity.board.controller;
 import com.sparta.codesourcecommunity.board.dto.BoardGetResponseDto;
 import com.sparta.codesourcecommunity.board.dto.BoardRequestDto;
 import com.sparta.codesourcecommunity.board.dto.BoardResponseDto;
-import com.sparta.codesourcecommunity.board.entity.Board;
 import com.sparta.codesourcecommunity.board.service.BoardService;
 import com.sparta.codesourcecommunity.common.CommonResponseDto;
 import com.sparta.codesourcecommunity.security.MemberDetailsImpl;
@@ -27,7 +26,6 @@ public class BoardController {
     private final BoardService boardService;
 
 
-
     public BoardController(BoardService boardService) {
         this.boardService = boardService;
     }
@@ -44,24 +42,26 @@ public class BoardController {
     }
 
 
-
     @PostMapping
-    public BoardResponseDto createBoard(@RequestBody BoardRequestDto board,@AuthenticationPrincipal
+    public BoardResponseDto createBoard(@RequestBody BoardRequestDto board, @AuthenticationPrincipal
     MemberDetailsImpl memberDetails) {
 
-        return boardService.createBoard(board,memberDetails);
+        return boardService.createBoard(board, memberDetails);
     }
 
     @PatchMapping("/{boardId}")
-    public BoardResponseDto updateBoard(@PathVariable Long boardId, @RequestBody BoardRequestDto updateBoard,@AuthenticationPrincipal
+    public BoardResponseDto updateBoard(@PathVariable Long boardId,
+        @RequestBody BoardRequestDto updateBoard, @AuthenticationPrincipal
     MemberDetailsImpl memberDetails) {
-        return boardService.updateBoard(boardId, updateBoard,memberDetails);
+        return boardService.updateBoard(boardId, updateBoard, memberDetails);
     }
 
     @DeleteMapping("/{boardId}")
-    public ResponseEntity<CommonResponseDto> deleteBoard(@PathVariable Long boardId,@AuthenticationPrincipal
-    MemberDetailsImpl memberDetails) {
+    public ResponseEntity<CommonResponseDto> deleteBoard(@PathVariable Long boardId,
+        @AuthenticationPrincipal
+        MemberDetailsImpl memberDetails) {
         boardService.deleteBoard(boardId, memberDetails);
-        return ResponseEntity.ok().body(new CommonResponseDto("게시글이 삭제되었습니다.", HttpStatus.OK.value()));
+        return ResponseEntity.ok()
+            .body(new CommonResponseDto("게시글이 삭제되었습니다.", HttpStatus.OK.value()));
     }
 }
