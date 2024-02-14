@@ -1,23 +1,11 @@
 package com.sparta.codesourcecommunity.board.dto;
 
-import com.sparta.codesourcecommunity.board.entity.Board;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
 
-  @Getter
-  @ToString
-  @NoArgsConstructor
-  @AllArgsConstructor
-  @Builder
-  public class BoardRequestDto {
-    private String title;
-    private String contents;
+@Getter
 
-    public Board toEntity() {
-      return new Board(title, contents);
-    }
-  }
-
+public class BoardRequestDto {
+  private String title;
+  private String contents;
+  private String subtitle;
+}
