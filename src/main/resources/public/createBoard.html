@@ -4,8 +4,52 @@
   <meta charset="UTF-8">
   <title>게시글 작성 페이지</title>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <link rel="stylesheet" type="text/css" href="styles.css">
+
 </head>
+<style>
+  /* 폼 컨테이너 가운데 정렬 */
+  #postForm {
+    width: 80%; /* 화면 가로 너비의 80%로 설정 */
+    margin: 0 auto; /* 좌우 여백을 자동으로 설정하여 가운데 정렬 */
+  }
+
+  /* 입력 요소 스타일링 */
+  #postForm div {
+    margin-bottom: 10px; /* 각 입력 요소 사이의 간격 설정 */
+  }
+
+  /* 제목 및 부제목 입력란 스타일링 */
+  #title,
+  #subtitle {
+    width: 100%; /* 부모 요소에 꽉 차게 설정 */
+    padding: 8px; /* 내부 여백 설정 */
+    border: 1px solid #ccc; /* 테두리 추가 */
+    border-radius: 5px; /* 모서리를 둥글게 만듭니다. */
+    background-color: rgba(255, 255, 255, 0.7); /* 배경색 및 투명도 설정 */
+  }
+
+  /* 내용 입력란 스타일링 */
+  #content {
+    width: 100%; /* 부모 요소에 꽉 차게 설정 */
+    height: 200px; /* 원하는 높이로 설정 */
+    padding: 8px; /* 내부 여백 설정 */
+    border: 1px solid #ccc; /* 테두리 추가 */
+    border-radius: 5px; /* 모서리를 둥글게 만듭니다. */
+    background-color: rgba(255, 255, 255, 0.7); /* 배경색 및 투명도 설정 */
+    resize: vertical; /* 수직으로만 크기 조절 가능하도록 설정 */
+  }
+</style>
+
 <body>
+<header>
+  <div><h1><a href="mainpage.html" style="text-decoration: none; color: inherit;">NBC-CODESOURCECOMMUNITY</a></h1></div>
+  <div>
+    <a href="/" class="btn">로그아웃</a>
+    <a href="createBoard.html" class="btn">게시글 작성</a>
+    <a href="mypage.html" class="btn">내 정보</a>
+  </div>
+</header>
 <h2>게시글 작성</h2>
 
 <form id="postForm">
@@ -26,35 +70,26 @@
 
 <script>
   $(document).ready(function() {
-    // 쿠키에서 토큰을 가져오는 함수
-    function getCookie(name) {
-      var value = "; " + document.cookie;
-      var parts = value.split("; " + name + "=");
-      if (parts.length === 2) return parts.pop().split(";").shift();
-    }
-
-    var token = getCookie("your_token_cookie_name"); // 여기에 쿠키의 이름을 입력하세요
 
     $('#postForm').submit(function(event) {
       event.preventDefault(); // 기본 폼 제출 동작 방지
 
       var formData = {
         title: $('#title').val(),
-        subtitle: $('#subtitle').val(),
+        // subtitle: $('#subtitle').val(),
         content: $('#content').val()
       };
 
       // AJAX 요청을 보내서 게시글 작성
       $.ajax({
         type: 'POST',
-        url: '/posts/create',
-        headers: {
-          'Authorization': 'Bearer ' + token // 토큰을 헤더에 포함시킵니다.
-        },
+        url: '/boards',
         contentType: 'application/json',
         data: JSON.stringify(formData),
         success: function(response) {
           alert('게시글이 작성되었습니다: ' + response.message);
+          var boardId = response.boardId;
+          window.location.href = "selectBoard.html?boardId=" + boardId;
           // 게시글 작성 성공 후 다른 작업을 수행할 수 있습니다.
         },
         error: function(xhr, status, error) {

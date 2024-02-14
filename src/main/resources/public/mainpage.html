@@ -5,54 +5,61 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>데이터를 li 형태로 표시하기</title>
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <link rel="stylesheet" type="text/css" href="styles.css">
   <style>
-    /* 헤더의 스타일링 */
-    header {
+    /* 추가된 CSS */
+
+    ul {
+      list-style: none;
+      padding: 0;
       display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 10px;
-      background-color: #333;
-      color: #fff;
+      flex-wrap: wrap;
     }
 
-    /* 로그인, 회원가입 버튼 스타일링 */
-    .btn {
-      padding: 5px 10px;
-      background-color: #fff;
-      color: #333;
-      text-decoration: none;
-      border-radius: 5px;
+    li {
+      width: calc(33.33% - 20px); /* 각 항목의 가로 너비를 33.33%로 설정하고, 간격을 고려하여 계산 */
+      margin: 10px;
+      box-sizing: border-box;
+    }
+
+    .item-container {
+      padding: 20px;
+      background-color: #f1f1f1;
+      border: 1px solid #ccc;
+      text-align: center;
+      cursor: pointer;
+    }
+
+    .item-text {
+      color: black; /* 검정 텍스트 색상 설정 */
+    }
+
+    .item-container:hover {
+      background-color: #ddd;
     }
   </style>
   <script>
     $(document).ready(function() {
       $.ajax({
-        url: "",
+        url: "boards", // 데이터를 가져올 URL
         type: "GET",
         success: function(response) {
-          // 요청이 성공하면 실행할 작업
-          console.log("GET 요청이 성공하였습니다.");
-          console.log("서버로부터의 응답:", response);
-
-          // <ul> 요소 선택
           var ul = $("<ul>");
 
-          // 받아온 데이터를 반복하면서 <li> 생성하여 <ul>에 추가
           response.forEach(function(item) {
-            var li = $("<li>").text(item.text); // 데이터를 텍스트로 추가
-            // 클릭 이벤트 추가하여 해당 페이지로 이동하며, 선택한 아이템의 boardId 값을 쿼리 문자열로 전달
-            li.click(function() {
-              window.location.href = "your_page_url_here?boardId=" + item.boardId; // 각 항목에 해당하는 페이지 URL로 변경하고, 선택한 아이템의 boardId 값을 쿼리 문자열로 전달
+            var li = $("<li>");
+            var container = $("<div>").addClass("item-container").click(function() {
+              window.location.href = "selectBoard.html?boardId=" + item.boardId;
             });
-            ul.append(li); // <li>를 <ul>에 추가
+            var text = $("<span>").addClass("item-text").text(item.title); // 텍스트 요소에 클래스 추가
+            container.append(text); // 텍스트 요소를 컨테이너에 추가
+            li.append(container);
+            ul.append(li);
           });
 
-          // <ul>을 페이지에 추가
           $("body").append(ul);
         },
         error: function(xhr, status, error) {
-          // 요청이 실패하면 실행할 작업
           console.error("GET 요청이 실패하였습니다.");
           console.error("에러:", error);
         }
@@ -62,9 +69,9 @@
 </head>
 <body>
 <header>
-  <div>사이트명</div>
+  <div><h1><a href="mainpage.html" style="text-decoration: none; color: inherit;">NBC-CODESOURCECOMMUNITY</a></h1></div>
   <div>
-    <a href="index.html" class="btn">로그아웃</a>
+    <a href="/" class="btn">로그아웃</a>
     <a href="createBoard.html" class="btn">게시글 작성</a>
     <a href="mypage.html" class="btn">내 정보</a>
   </div>
