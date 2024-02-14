@@ -38,6 +38,9 @@ public class Board {
     private String title;
 
     @Column(nullable = false)
+    private String subtitle;
+
+    @Column(nullable = false)
     private String contents;
 
     @ManyToOne
@@ -50,18 +53,18 @@ public class Board {
     @OneToMany(mappedBy = "board")
     private List<Like> like = new ArrayList<>();
 
-//    @ColumnDefault("0")
-//    @Column(name = "view_count",nullable = false)
-//    private Integer viewCount;
-
-    @Builder
-    public Board(String title, String contents) {
+    public Board(String title, String subtitle, String contents, Member member) {
         this.title = title;
+        this.subtitle = subtitle;
         this.contents = contents;
+        this.member = member;
+
     }
 
-    public void update(String title, String contents) {
+    public void update(String title,  String subtitle, String contents) {
         this.title = title;
+        this.subtitle = subtitle;
         this.contents = contents;
+
     }
 }

@@ -5,6 +5,7 @@ import com.sparta.codesourcecommunity.board.dto.BoardRequestDto;
 import com.sparta.codesourcecommunity.board.dto.BoardResponseDto;
 import com.sparta.codesourcecommunity.board.entity.Board;
 import com.sparta.codesourcecommunity.board.repository.BoardRepository;
+import com.sparta.codesourcecommunity.security.MemberDetailsImpl;
 import java.util.ArrayList;
 import java.util.List;
 import org.springframework.stereotype.Service;
@@ -40,22 +41,31 @@ public class BoardService {
     }
 
     @Transactional
-    public Board createBoard(BoardRequestDto board) {
-        return boardRepository.save(board.toEntity());
+    public BoardResponseDto createBoard(BoardRequestDto boardRequestDto, MemberDetailsImpl memberDetails) {
+        Board board = new Board(boardRequestDto.getTitle(), boardRequestDto.getSubtitle(), boardRequestDto.getContents(),memberDetails.getMember());
+        boardRepository.save(board);
+        return new BoardResponseDto(board);
     }
 
     @Transactional
-    public BoardResponseDto updateBoard(Long id, BoardRequestDto updateBoard) {
+    public BoardResponseDto updateBoard(Long id, BoardRequestDto updateBoard, MemberDetailsImpl memberDetails) {
         Board board = boardRepository.findById(id)
             .orElseThrow(() -> new IllegalArgumentException("잘못된 Board ID 입니다."));
-        board.update(updateBoard.getTitle(), updateBoard.getContents());
+        if(board.getMember().getMemberId()!=memberDetails.getMember().getMemberId()){
+            throw new IllegalArgumentException("수정 권한이 없습니다.");
+        }
+        board.update(updateBoard.getTitle(), updateBoard.getSubtitle(), updateBoard.getContents());
 
         BoardResponseDto boardResponseDto = new BoardResponseDto(board);
         return boardResponseDto;
     }
 
     @Transactional
-    public void deleteBoard(Long id) {
+    public void deleteBoard(Long id, MemberDetailsImpl memberDetails) {
+        Board board = boardRepository.findById(id).orElseThrow();
+        if(board.getMember().getMemberId()!=memberDetails.getMember().getMemberId()) {
+            throw new IllegalArgumentException("삭제 권한이 없습니다.");
+        }
         boardRepository.deleteById(id);
     }
 }
