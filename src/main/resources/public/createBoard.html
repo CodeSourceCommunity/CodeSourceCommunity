@@ -87,7 +87,7 @@
         contentType: 'application/json',
         data: JSON.stringify(formData),
         success: function(response) {
-          alert('게시글이 작성되었습니다: ' + response.message);
+          alert('게시글이 작성되었습니다');
           var boardId = response.boardId;
           window.location.href = "selectBoard.html?boardId=" + boardId;
           // 게시글 작성 성공 후 다른 작업을 수행할 수 있습니다.
