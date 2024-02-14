@@ -3,7 +3,6 @@ package com.sparta.codesourcecommunity.board.controller;
 import com.sparta.codesourcecommunity.board.dto.BoardGetResponseDto;
 import com.sparta.codesourcecommunity.board.dto.BoardRequestDto;
 import com.sparta.codesourcecommunity.board.dto.BoardResponseDto;
-import com.sparta.codesourcecommunity.board.entity.Board;
 import com.sparta.codesourcecommunity.board.service.BoardService;
 import com.sparta.codesourcecommunity.common.CommonResponseDto;
 import com.sparta.codesourcecommunity.security.MemberDetailsImpl;
@@ -24,44 +23,45 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/boards")
 public class BoardController {
 
-  private final BoardService boardService;
+    private final BoardService boardService;
 
 
+    public BoardController(BoardService boardService) {
+        this.boardService = boardService;
+    }
 
-  public BoardController(BoardService boardService) {
-    this.boardService = boardService;
-  }
-
-  @GetMapping("/{boardId}")
-  public BoardGetResponseDto getBoardById(@PathVariable Long boardId) {
-    return boardService.getBoardById(boardId);
-  }
-
-
-  @GetMapping
-  public List<BoardGetResponseDto> getAllBoard() {
-    return boardService.getAllBoard();
-  }
+    @GetMapping("/{boardId}")
+    public BoardGetResponseDto getBoardById(@PathVariable Long boardId) {
+        return boardService.getBoardById(boardId);
+    }
 
 
+    @GetMapping
+    public List<BoardGetResponseDto> getAllBoard() {
+        return boardService.getAllBoard();
+    }
 
-  @PostMapping
-  public BoardResponseDto createBoard(@RequestBody BoardRequestDto board,@AuthenticationPrincipal
-      MemberDetailsImpl memberDetails) {
 
-    return boardService.createBoard(board,memberDetails);
-  }
+    @PostMapping
+    public BoardResponseDto createBoard(@RequestBody BoardRequestDto board, @AuthenticationPrincipal
+    MemberDetailsImpl memberDetails) {
 
-  @PatchMapping("/{boardId}")
-  public BoardResponseDto updateBoard(@PathVariable Long boardId, @RequestBody BoardRequestDto updateBoard,@AuthenticationPrincipal
-  MemberDetailsImpl memberDetails) {
-    return boardService.updateBoard(boardId, updateBoard,memberDetails);
-  }
+        return boardService.createBoard(board, memberDetails);
+    }
 
-  @DeleteMapping("/{boardId}")
-  public ResponseEntity<CommonResponseDto> deleteBoard(@PathVariable Long boardId,@AuthenticationPrincipal
-  MemberDetailsImpl memberDetails) {
-    boardService.deleteBoard(boardId, memberDetails);
-    return ResponseEntity.ok().body(new CommonResponseDto("게시글이 삭제되었습니다.", HttpStatus.OK.value()));
-  }
+    @PatchMapping("/{boardId}")
+    public BoardResponseDto updateBoard(@PathVariable Long boardId,
+        @RequestBody BoardRequestDto updateBoard, @AuthenticationPrincipal
+    MemberDetailsImpl memberDetails) {
+        return boardService.updateBoard(boardId, updateBoard, memberDetails);
+    }
+
+    @DeleteMapping("/{boardId}")
+    public ResponseEntity<CommonResponseDto> deleteBoard(@PathVariable Long boardId,
+        @AuthenticationPrincipal
+        MemberDetailsImpl memberDetails) {
+        boardService.deleteBoard(boardId, memberDetails);
+        return ResponseEntity.ok()
+            .body(new CommonResponseDto("게시글이 삭제되었습니다.", HttpStatus.OK.value()));
+    }
 }

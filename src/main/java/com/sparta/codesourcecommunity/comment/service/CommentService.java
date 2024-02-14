@@ -32,7 +32,7 @@ public class CommentService {
         Comment saveComment = new Comment(commentRequestDto.getComment(), member, board);
         commentRepository.save(saveComment);
 
-        return new CommentResponseDto(saveComment);
+        return new CommentResponseDto(saveComment, member.getNickname());
 
     }
 
@@ -41,7 +41,9 @@ public class CommentService {
         List<CommentResponseDto> commentResponseDtos = new ArrayList<>();
 
         for (Comment comment : commentList) {
-            commentResponseDtos.add(new CommentResponseDto(comment));
+            Member member = memberRepository.findById(comment.getMember().getMemberId())
+                .orElseThrow();
+            commentResponseDtos.add(new CommentResponseDto(comment, member.getNickname()));
         }
 
         return commentResponseDtos;
@@ -58,7 +60,7 @@ public class CommentService {
 
         comment.update(commentRequestDto);
 
-        return new CommentResponseDto(comment);
+        return new CommentResponseDto(comment, comment.getMember().getNickname());
 
     }
 

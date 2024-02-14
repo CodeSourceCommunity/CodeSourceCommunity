@@ -1,8 +1,6 @@
 package com.sparta.codesourcecommunity.board.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.sparta.codesourcecommunity.comment.entity.Comment;
-import com.sparta.codesourcecommunity.like.entity.Like;
 import com.sparta.codesourcecommunity.member.entity.Member;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -16,11 +14,9 @@ import jakarta.persistence.Table;
 import java.util.ArrayList;
 import java.util.List;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.ColumnDefault;
 
 @Entity
 @Data
@@ -50,8 +46,6 @@ public class Board {
     @OneToMany(mappedBy = "board")
     private List<Comment> comment = new ArrayList<>();
 
-    @OneToMany(mappedBy = "board")
-    private List<Like> like = new ArrayList<>();
 
     public Board(String title, String subtitle, String contents, Member member) {
         this.title = title;
@@ -61,7 +55,7 @@ public class Board {
 
     }
 
-    public void update(String title,  String subtitle, String contents) {
+    public void update(String title, String subtitle, String contents) {
         this.title = title;
         this.subtitle = subtitle;
         this.contents = contents;

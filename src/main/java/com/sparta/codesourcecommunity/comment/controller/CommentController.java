@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/board/{boardId}/comment")
+@RequestMapping("/boards/{boardId}/comments")
 @RequiredArgsConstructor
 public class CommentController {
 
@@ -46,7 +46,7 @@ public class CommentController {
         @Valid @RequestBody CommentRequestDto commentRequestDto,
         @AuthenticationPrincipal MemberDetailsImpl memberDetails) {
 
-        return commentService.updateComment(commentId,commentRequestDto, memberDetails);
+        return commentService.updateComment(commentId, commentRequestDto, memberDetails);
     }
 
     @DeleteMapping("/{commentId}")

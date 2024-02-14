@@ -22,16 +22,14 @@ public class BoardService {
     }
 
     @Transactional
-    public List<BoardGetResponseDto> getAllBoard()
-    {
+    public List<BoardGetResponseDto> getAllBoard() {
         List<Board> boardList = boardRepository.findAll();
         List<BoardGetResponseDto> boardResponseDtos = new ArrayList<>();
-        for(int i=0; i<boardList.size(); i++) {
+        for (int i = 0; i < boardList.size(); i++) {
             boardResponseDtos.add(new BoardGetResponseDto(boardList.get(i)));
         }
         return boardResponseDtos;
     }
-
 
 
     public BoardGetResponseDto getBoardById(Long id) {
@@ -41,17 +39,20 @@ public class BoardService {
     }
 
     @Transactional
-    public BoardResponseDto createBoard(BoardRequestDto boardRequestDto, MemberDetailsImpl memberDetails) {
-        Board board = new Board(boardRequestDto.getTitle(), boardRequestDto.getSubtitle(), boardRequestDto.getContents(),memberDetails.getMember());
+    public BoardResponseDto createBoard(BoardRequestDto boardRequestDto,
+        MemberDetailsImpl memberDetails) {
+        Board board = new Board(boardRequestDto.getTitle(), boardRequestDto.getSubtitle(),
+            boardRequestDto.getContents(), memberDetails.getMember());
         boardRepository.save(board);
         return new BoardResponseDto(board);
     }
 
     @Transactional
-    public BoardResponseDto updateBoard(Long id, BoardRequestDto updateBoard, MemberDetailsImpl memberDetails) {
+    public BoardResponseDto updateBoard(Long id, BoardRequestDto updateBoard,
+        MemberDetailsImpl memberDetails) {
         Board board = boardRepository.findById(id)
             .orElseThrow(() -> new IllegalArgumentException("잘못된 Board ID 입니다."));
-        if(board.getMember().getMemberId()!=memberDetails.getMember().getMemberId()){
+        if (board.getMember().getMemberId() != memberDetails.getMember().getMemberId()) {
             throw new IllegalArgumentException("수정 권한이 없습니다.");
         }
         board.update(updateBoard.getTitle(), updateBoard.getSubtitle(), updateBoard.getContents());
@@ -63,7 +64,7 @@ public class BoardService {
     @Transactional
     public void deleteBoard(Long id, MemberDetailsImpl memberDetails) {
         Board board = boardRepository.findById(id).orElseThrow();
-        if(board.getMember().getMemberId()!=memberDetails.getMember().getMemberId()) {
+        if (board.getMember().getMemberId() != memberDetails.getMember().getMemberId()) {
             throw new IllegalArgumentException("삭제 권한이 없습니다.");
         }
         boardRepository.deleteById(id);

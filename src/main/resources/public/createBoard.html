@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>게시글 작성 페이지</title>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <link rel="stylesheet" type="text/css" href="styles.css">
+
+</head>
+<style>
+  /* 폼 컨테이너 가운데 정렬 */
+  #postForm {
+    width: 80%; /* 화면 가로 너비의 80%로 설정 */
+    margin: 0 auto; /* 좌우 여백을 자동으로 설정하여 가운데 정렬 */
+  }
+
+  /* 입력 요소 스타일링 */
+  #postForm div {
+    margin-bottom: 10px; /* 각 입력 요소 사이의 간격 설정 */
+  }
+
+  /* 제목 및 부제목 입력란 스타일링 */
+  #title,
+  #subtitle {
+    width: 100%; /* 부모 요소에 꽉 차게 설정 */
+    padding: 8px; /* 내부 여백 설정 */
+    border: 1px solid #ccc; /* 테두리 추가 */
+    border-radius: 5px; /* 모서리를 둥글게 만듭니다. */
+    background-color: rgba(255, 255, 255, 0.7); /* 배경색 및 투명도 설정 */
+  }
+
+  /* 내용 입력란 스타일링 */
+  #content {
+    width: 100%; /* 부모 요소에 꽉 차게 설정 */
+    height: 200px; /* 원하는 높이로 설정 */
+    padding: 8px; /* 내부 여백 설정 */
+    border: 1px solid #ccc; /* 테두리 추가 */
+    border-radius: 5px; /* 모서리를 둥글게 만듭니다. */
+    background-color: rgba(255, 255, 255, 0.7); /* 배경색 및 투명도 설정 */
+    resize: vertical; /* 수직으로만 크기 조절 가능하도록 설정 */
+  }
+</style>
+
+<body>
+<header>
+  <div><h1><a href="mainpage.html" style="text-decoration: none; color: inherit;">NBC-CODESOURCECOMMUNITY</a></h1></div>
+  <div>
+    <a href="/" class="btn">로그아웃</a>
+    <a href="createBoard.html" class="btn">게시글 작성</a>
+    <a href="mypage.html" class="btn">내 정보</a>
+  </div>
+</header>
+<h2>게시글 작성</h2>
+
+<form id="postForm">
+  <div>
+    <label for="title">제목:</label>
+    <input type="text" id="title" name="title">
+  </div>
+  <div>
+    <label for="subtitle">부제목(에러 메시지):</label>
+    <input type="text" id="subtitle" name="subtitle">
+  </div>
+  <div>
+    <label for="content">내용:</label>
+    <textarea id="content" name="content"></textarea>
+  </div>
+  <button type="submit">작성</button>
+</form>
+
+<script>
+  $(document).ready(function() {
+
+    $('#postForm').submit(function(event) {
+      event.preventDefault(); // 기본 폼 제출 동작 방지
+
+      var formData = {
+        title: $('#title').val(),
+        subtitle: $('#subtitle').val(),
+        contents: $('#content').val()
+      };
+
+      // AJAX 요청을 보내서 게시글 작성
+      $.ajax({
+        type: 'POST',
+        url: '/boards',
+        contentType: 'application/json',
+        data: JSON.stringify(formData),
+        success: function(response) {
+          alert('게시글이 작성되었습니다');
+          var boardId = response.boardId;
+          window.location.href = "selectBoard.html?boardId=" + boardId;
+          // 게시글 작성 성공 후 다른 작업을 수행할 수 있습니다.
+        },
+        error: function(xhr, status, error) {
+          alert('게시글 작성에 실패했습니다: ' + xhr.responseText);
+          // 게시글 작성 실패 시 처리할 내용을 정의할 수 있습니다.
+        }
+      });
+    });
+  });
+</script>
+</body>
+</html>

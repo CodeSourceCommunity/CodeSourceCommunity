@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>데이터를 li 형태로 표시하기</title>
+  <link rel="stylesheet" type="text/css" href="styles.css">
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script>
+    $(document).ready(function() {
+      $.ajax({
+        url: "",
+        type: "GET",
+        success: function(response) {
+          // 요청이 성공하면 실행할 작업
+          console.log("GET 요청이 성공하였습니다.");
+          console.log("서버로부터의 응답:", response);
+
+          // <ul> 요소 선택
+          var ul = $("<ul>");
+
+          // 받아온 데이터를 반복하면서 <li> 생성하여 <ul>에 추가
+          response.forEach(function(item) {
+            var li = $("<li>").text(item); // 데이터를 텍스트로 추가
+            ul.append(li); // <li>를 <ul>에 추가
+          });
+
+          // <ul>을 페이지에 추가
+          $("body").append(ul);
+        },
+        error: function(xhr, status, error) {
+          // 요청이 실패하면 실행할 작업
+          console.error("GET 요청이 실패하였습니다.");
+          console.error("에러:", error);
+        }
+      });
+    });
+  </script>
+</head>
+<body>
+<header>
+  <div><h1><a href="/" style="text-decoration: none; color: inherit;">NBC-CODESOURCECOMMUNITY</a></h1></div>
+  <div>
+    <a href="signup.html" class="btn">회원가입</a>
+    <a href="login.html" class="btn">로그인</a>
+  </div>
+</header>
+</body>
+</html>

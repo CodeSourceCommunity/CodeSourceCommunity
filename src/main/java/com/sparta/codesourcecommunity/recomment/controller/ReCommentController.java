@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/board/{boardId}/comment/{commentId}/recomment")
+@RequestMapping("/boards/{boardId}/comments/{commentId}/recomments")
 @RequiredArgsConstructor
 public class ReCommentController {
 

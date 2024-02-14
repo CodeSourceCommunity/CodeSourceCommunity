@@ -2,7 +2,6 @@ package com.sparta.codesourcecommunity.member.entity;
 
 import com.sparta.codesourcecommunity.board.entity.Board;
 import com.sparta.codesourcecommunity.comment.entity.Comment;
-import com.sparta.codesourcecommunity.like.entity.Like;
 import com.sparta.codesourcecommunity.recomment.entity.ReComment;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -36,14 +35,12 @@ public class Member {
     @Column
     private String introduce;
 
-//    @OneToMany(mappedBy = "member", cascade = CascadeType.ALL, orphanRemoval = true)
-//    private List<Board> board = new ArrayList<>();
-//    @OneToMany(mappedBy = "member", cascade = CascadeType.ALL, orphanRemoval = true)
-//    private List<Comment> comment = new ArrayList<>();
-//    @OneToMany(mappedBy = "member", cascade = CascadeType.ALL, orphanRemoval = true)
-//    private List<ReComment> reComment = new ArrayList<>();
-//    @OneToMany(mappedBy = "member", cascade = CascadeType.ALL, orphanRemoval = true)
-//    private List<Like> like = new ArrayList<>();
+    @OneToMany(mappedBy = "member", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Board> board = new ArrayList<>();
+    @OneToMany(mappedBy = "member", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Comment> comment = new ArrayList<>();
+    @OneToMany(mappedBy = "member", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<ReComment> reComment = new ArrayList<>();
 
 
     public Member(String email, String nickname, String password, String introduce) {

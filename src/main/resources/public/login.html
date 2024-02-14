@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>로그인 페이지</title>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <link rel="stylesheet" type="text/css" href="styles.css">
+</head>
+
+<body>
+<header>
+  <div><h1><a href="/" style="text-decoration: none; color: inherit;">NBC-CODESOURCECOMMUNITY</a></h1></div>
+</header>
+<h2>로그인</h2>
+<form id="loginForm">
+  <div>
+    <label for="email">사용자명:</label>
+    <input type="text" id="email" name="email">
+  </div>
+  <div>
+    <label for="password">비밀번호:</label>
+    <input type="password" id="password" name="password">
+  </div>
+  <button type="submit">로그인</button>
+  <a href="signup.html" class="btn">회원가입</a>
+</form>
+</body>
+<script>
+  $(document).ready(function() {
+    $('#loginForm').submit(function(event) {
+      event.preventDefault(); // 기본 폼 제출 동작 방지
+      var formData = {
+        email: $('#email').val(),
+        password: $('#password').val(),
+        nickname: "",
+        introduce: ""
+      };
+      $.ajax({
+        type: 'POST',
+        url: '/members/login',
+        contentType: 'application/json',
+        data: JSON.stringify(formData),
+        success: function(response, status, xhr) {
+          alert('로그인 성공: ' + response.message);
+          // var token = xhr.getResponseHeader('Authorization');
+          // setCookie('token', token, 1); // 토큰을 1시간 동안 유지
+          //
+          window.location.href = 'mainpage.html';
+          // 회원가입 성공 후 어떤 작업을 수행할지 정의
+        },
+        error: function(xhr, status, error) {
+          alert('로그인 실패: ' + xhr.responseText);
+          // 회원가입 실패 시 처리할 내용 정의
+        }
+      });
+    });
+  });
+</script>
+</html>
+

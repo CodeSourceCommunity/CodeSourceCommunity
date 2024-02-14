@@ -7,5 +7,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 public interface MemberBeforeAuthRepository extends JpaRepository<MemberBeforeEmailAuth, Long> {
 
     void deleteByEmail(String email);
+
     Optional<MemberBeforeEmailAuth> findByEmail(String email);
 }
