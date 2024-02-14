@@ -4,6 +4,7 @@ import com.sparta.codesourcecommunity.board.entity.Board;
 import com.sparta.codesourcecommunity.comment.dto.CommentRequestDto;
 import com.sparta.codesourcecommunity.member.entity.Member;
 import com.sparta.codesourcecommunity.recomment.entity.ReComment;
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -43,7 +44,7 @@ public class Comment {
     @JoinColumn(name = "boardId")
     private Board board;
 
-    @OneToMany(mappedBy = "comment")
+    @OneToMany(mappedBy = "comment", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<ReComment> reComments = new ArrayList<>();
 
     public Comment(String contents, Member member, Board board) {
