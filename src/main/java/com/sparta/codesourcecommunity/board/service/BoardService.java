@@ -1,51 +1,71 @@
 package com.sparta.codesourcecommunity.board.service;
 
+import com.sparta.codesourcecommunity.board.dto.BoardGetResponseDto;
 import com.sparta.codesourcecommunity.board.dto.BoardRequestDto;
 import com.sparta.codesourcecommunity.board.dto.BoardResponseDto;
 import com.sparta.codesourcecommunity.board.entity.Board;
 import com.sparta.codesourcecommunity.board.repository.BoardRepository;
-import com.sparta.codesourcecommunity.member.entity.Member;
-import com.sparta.codesourcecommunity.member.repository.MemberRepository;
 import com.sparta.codesourcecommunity.security.MemberDetailsImpl;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
-import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
-@RequiredArgsConstructor
 public class BoardService {
 
-    private final MemberRepository memberRepository;
+
     private final BoardRepository boardRepository;
 
-    public BoardResponseDto createSchedule(BoardRequestDto boardRequestDto, MemberDetailsImpl memberDetails) {
-        String title = boardRequestDto.getTitle();
-        String content = boardRequestDto.getContent();
-        String email = memberDetails.getMember().getEmail();
-
-        Member member = memberRepository.findByEmail(email).orElseThrow();
-
-        Board board = new Board(title, content, member);
-
-        boardRepository.save(board);
-
-        return new BoardResponseDto(board);
+    public BoardService(BoardRepository boardRepository) {
+        this.boardRepository = boardRepository;
     }
 
-    public BoardResponseDto readBoard(Long boardId) {
-        Board board = boardRepository.findById(boardId).orElseThrow();
-        
-        return new BoardResponseDto(board);
-    }
-
-    public List<BoardResponseDto> readBoards() {
+    @Transactional
+    public List<BoardGetResponseDto> getAllBoard()
+    {
         List<Board> boardList = boardRepository.findAll();
+        List<BoardGetResponseDto> boardResponseDtos = new ArrayList<>();
+        for(int i=0; i<boardList.size(); i++) {
+            boardResponseDtos.add(new BoardGetResponseDto(boardList.get(i)));
+        }
+        return boardResponseDtos;
+    }
 
-        List<BoardResponseDto> boardResponseDtoList = boardList.stream()
-            .map(BoardResponseDto::new)
-            .toList();
 
-        return boardResponseDtoList;
+
+    public BoardGetResponseDto getBoardById(Long id) {
+        Board board = boardRepository.findById(id)
+            .orElseThrow(() -> new IllegalArgumentException("잘못된 Board ID 입니다."));
+        return new BoardGetResponseDto(board);
+    }
+
+    @Transactional
+    public BoardResponseDto createBoard(BoardRequestDto boardRequestDto, MemberDetailsImpl memberDetails) {
+        Board board = new Board(boardRequestDto.getTitle(), boardRequestDto.getSubtitle(), boardRequestDto.getContents(),memberDetails.getMember());
+        boardRepository.save(board);
+        return new BoardResponseDto(board);
+    }
+
+    @Transactional
+    public BoardResponseDto updateBoard(Long id, BoardRequestDto updateBoard, MemberDetailsImpl memberDetails) {
+        Board board = boardRepository.findById(id)
+            .orElseThrow(() -> new IllegalArgumentException("잘못된 Board ID 입니다."));
+        if(board.getMember().getMemberId()!=memberDetails.getMember().getMemberId()){
+            throw new IllegalArgumentException("수정 권한이 없습니다.");
+        }
+        board.update(updateBoard.getTitle(), updateBoard.getSubtitle(), updateBoard.getContents());
+
+        BoardResponseDto boardResponseDto = new BoardResponseDto(board);
+        return boardResponseDto;
+    }
+
+    @Transactional
+    public void deleteBoard(Long id, MemberDetailsImpl memberDetails) {
+        Board board = boardRepository.findById(id).orElseThrow();
+        if(board.getMember().getMemberId()!=memberDetails.getMember().getMemberId()) {
+            throw new IllegalArgumentException("삭제 권한이 없습니다.");
+        }
+        boardRepository.deleteById(id);
     }
 }
