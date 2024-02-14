@@ -1,7 +1,6 @@
 package com.sparta.codesourcecommunity.board.entity;
 
 import com.sparta.codesourcecommunity.comment.entity.Comment;
-import com.sparta.codesourcecommunity.like.entity.Like;
 import com.sparta.codesourcecommunity.member.entity.Member;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
