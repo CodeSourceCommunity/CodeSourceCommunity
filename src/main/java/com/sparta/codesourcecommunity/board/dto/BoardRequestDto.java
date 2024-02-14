@@ -7,17 +7,16 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
-  @Getter
-  @ToString
-  @NoArgsConstructor
-  @AllArgsConstructor
-  @Builder
-  public class BoardRequestDto {
-    private String title;
-    private String contents;
+@Getter
+@ToString
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
+public class BoardRequestDto {
+  private String title;
+  private String contents;
 
-    public Board toEntity() {
-      return new Board(title, contents);
-    }
+  public Board toEntity() {
+    return new Board(title, contents);
   }
-
+}
