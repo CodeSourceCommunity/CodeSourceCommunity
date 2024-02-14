@@ -15,11 +15,13 @@ import jakarta.persistence.Table;
 import java.util.ArrayList;
 import java.util.List;
 import lombok.AllArgsConstructor;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
 @Setter
+@Getter
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "boards")
@@ -46,6 +48,9 @@ public class Board {
     private List<Like> like = new ArrayList<>();
 
 
-
-
+    public Board(String title, String content, Member member) {
+        this.title = title;
+        this.contents = content;
+        this.member = member;
+    }
 }
