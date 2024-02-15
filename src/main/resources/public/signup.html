@@ -18,33 +18,37 @@
 <script>
   $(document).ready(function() {
     // 이메일 인증번호를 입력받는 함수
-    function enterVerificationCode() {
-      var verificationCode = prompt("이메일로 전송된 인증번호를 입력하세요:");
-      if (verificationCode != null && verificationCode !== "") {
-        // 인증번호가 입력되었을 경우, 서버로 POST 요청을 보냄
-        var formData = {
-          email: $('#email').val(),
-          authNum: verificationCode
-        };
-        $.ajax({
-          type: 'POST',
-          url: '/members/emailAuthCheck',
-          contentType: 'application/json',
-          data: JSON.stringify(formData),
-          success: function(response, status, xhr) {
-            alert(response.message);
-            // 인증에 성공했을 때 처리할 내용 정의
-            window.location.href = 'login.html';
-          },
-          error: function(xhr, status, error) {
-            alert('인증 실패: ' + xhr.responseText);
-            // 인증에 실패했을 때 처리할 내용 정의
-          }
-        });
-      } else {
-        alert("인증번호를 입력해주세요.");
-      }
+    function showVerificationCodeInput() {
+      document.getElementById("verificationCodeInput").style.display = "block";
+      document.getElementById("sendAuthBtn").style.display = "block";
     }
+
+    // function enterVerificationCode() {
+    //   var verificationCode = document.getElementById("verificationCode").value;
+    //   if (verificationCode !== "") {
+    //     var formData = {
+    //       email: $('#email').val(),
+    //       authNum: verificationCode
+    //     };
+    //     $.ajax({
+    //       type: 'POST',
+    //       url: '/members/emailAuthCheck',
+    //       contentType: 'application/json',
+    //       data: JSON.stringify(formData),
+    //       success: function(response, status, xhr) {
+    //         alert(response.message);
+    //         // 인증에 성공했을 때 처리할 내용 정의
+    //         window.location.href = 'login.html';
+    //       },
+    //       error: function(xhr, status, error) {
+    //         alert('인증 실패: ' + xhr.responseText);
+    //         // 인증에 실패했을 때 처리할 내용 정의
+    //       }
+    //     });
+    //   } else {
+    //     alert("인증번호를 입력해주세요.");
+    //   }
+    // }
 
     // 회원가입 버튼 클릭 시 처리
     $('#signupBtn').click(function(event) {
@@ -62,7 +66,7 @@
         data: JSON.stringify(formData),
         success: function(response, status, xhr) {
           alert('이메일을 확인해주세요. 인증 링크가 발송되었습니다.');
-          enterVerificationCode(); // 이메일 인증번호를 입력받는 함수 호출
+          showVerificationCodeInput(); // 인증번호 입력란을 보여주는 함수 호출
         },
         error: function(xhr, status, error) {
           alert('회원가입 실패: ' + xhr.responseText);
@@ -70,6 +74,29 @@
         }
       });
     });
+
+    // 인증번호 전송 버튼 클릭 시 처리
+    $('#sendAuthBtn').click(function(event) {
+      event.preventDefault(); // 기본 이벤트 동작 방지
+      var email = $('#email').val();
+      var code = $('#verificationCode').val();
+      console.log(email);
+      console.log(code);
+      $.ajax({
+        type: 'POST',
+        url: '/members/emailAuthCheck',
+        contentType: 'application/json',
+        data: JSON.stringify({ email: email, authNum: code}),
+        success: function(response, status, xhr) {
+          alert('인증번호가 이메일로 전송되었습니다.');
+          window.location.href = 'login.html';
+        },
+        error: function(xhr, status, error) {
+          alert('인증번호 전송 실패: ' + xhr.responseText);
+        }
+      });
+    });
+
   });
 </script>
 
@@ -92,6 +119,11 @@
     <textarea id="introduce" name="introduce"></textarea>
   </div>
   <button id="signupBtn" type="button">회원가입</button>
+  <div id="verificationCodeInput" style="display: none;">
+    <label for="verificationCode">인증번호:</label>
+    <input type="text" id="verificationCode" name="verificationCode">
+    <button id="sendAuthBtn" style="display: none;">인증번호 전송</button> <!-- 인증번호 전송 버튼 추가 -->
+  </div>
   <a href="/login.html">이미 회원이신가요? 로그인</a>
 </form>
 </body>

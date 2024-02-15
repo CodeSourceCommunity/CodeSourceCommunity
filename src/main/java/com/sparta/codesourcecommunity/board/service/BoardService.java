@@ -5,6 +5,9 @@ import com.sparta.codesourcecommunity.board.dto.BoardRequestDto;
 import com.sparta.codesourcecommunity.board.dto.BoardResponseDto;
 import com.sparta.codesourcecommunity.board.entity.Board;
 import com.sparta.codesourcecommunity.board.repository.BoardRepository;
+import com.sparta.codesourcecommunity.exception.DeletionNotAllowedException;
+import com.sparta.codesourcecommunity.exception.NotFoundBoardException;
+import com.sparta.codesourcecommunity.exception.UnmodifiableException;
 import com.sparta.codesourcecommunity.security.MemberDetailsImpl;
 import java.util.ArrayList;
 import java.util.List;
@@ -25,8 +28,8 @@ public class BoardService {
     public List<BoardGetResponseDto> getAllBoard() {
         List<Board> boardList = boardRepository.findAll();
         List<BoardGetResponseDto> boardResponseDtos = new ArrayList<>();
-        for (int i = 0; i < boardList.size(); i++) {
-            boardResponseDtos.add(new BoardGetResponseDto(boardList.get(i)));
+        for (Board board : boardList) {
+            boardResponseDtos.add(new BoardGetResponseDto(board));
         }
         return boardResponseDtos;
     }
@@ -34,7 +37,7 @@ public class BoardService {
 
     public BoardGetResponseDto getBoardById(Long id) {
         Board board = boardRepository.findById(id)
-            .orElseThrow(() -> new IllegalArgumentException("잘못된 Board ID 입니다."));
+            .orElseThrow(NotFoundBoardException::new);
         return new BoardGetResponseDto(board);
     }
 
@@ -50,22 +53,20 @@ public class BoardService {
     @Transactional
     public BoardResponseDto updateBoard(Long id, BoardRequestDto updateBoard,
         MemberDetailsImpl memberDetails) {
-        Board board = boardRepository.findById(id)
-            .orElseThrow(() -> new IllegalArgumentException("잘못된 Board ID 입니다."));
+        Board board = boardRepository.findById(id).orElseThrow(NotFoundBoardException::new);
         if (board.getMember().getMemberId() != memberDetails.getMember().getMemberId()) {
-            throw new IllegalArgumentException("수정 권한이 없습니다.");
+            throw new UnmodifiableException();
         }
         board.update(updateBoard.getTitle(), updateBoard.getSubtitle(), updateBoard.getContents());
 
-        BoardResponseDto boardResponseDto = new BoardResponseDto(board);
-        return boardResponseDto;
+        return new BoardResponseDto(board);
     }
 
     @Transactional
     public void deleteBoard(Long id, MemberDetailsImpl memberDetails) {
         Board board = boardRepository.findById(id).orElseThrow();
         if (board.getMember().getMemberId() != memberDetails.getMember().getMemberId()) {
-            throw new IllegalArgumentException("삭제 권한이 없습니다.");
+            throw new DeletionNotAllowedException();
         }
         boardRepository.deleteById(id);
     }

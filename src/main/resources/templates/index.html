@@ -9,27 +9,24 @@
   <script>
     $(document).ready(function() {
       $.ajax({
-        url: "",
+        url: "boards", // 데이터를 가져올 URL
         type: "GET",
         success: function(response) {
-          // 요청이 성공하면 실행할 작업
-          console.log("GET 요청이 성공하였습니다.");
-          console.log("서버로부터의 응답:", response);
-
-          // <ul> 요소 선택
           var ul = $("<ul>");
 
-          // 받아온 데이터를 반복하면서 <li> 생성하여 <ul>에 추가
           response.forEach(function(item) {
-            var li = $("<li>").text(item); // 데이터를 텍스트로 추가
-            ul.append(li); // <li>를 <ul>에 추가
+            var li = $("<li>");
+            var container = $("<div>").addClass("item-container").click(function() {
+            });
+            var text = $("<span>").addClass("item-text").text(item.title); // 텍스트 요소에 클래스 추가
+            container.append(text); // 텍스트 요소를 컨테이너에 추가
+            li.append(container);
+            ul.append(li);
           });
 
-          // <ul>을 페이지에 추가
           $("body").append(ul);
         },
         error: function(xhr, status, error) {
-          // 요청이 실패하면 실행할 작업
           console.error("GET 요청이 실패하였습니다.");
           console.error("에러:", error);
         }

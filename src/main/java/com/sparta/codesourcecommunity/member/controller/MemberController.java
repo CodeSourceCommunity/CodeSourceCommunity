@@ -1,6 +1,6 @@
 package com.sparta.codesourcecommunity.member.controller;
 
-import com.sparta.codesourcecommunity.common.CommonResponseDto;
+import com.sparta.codesourcecommunity.exception.dto.ExceptionDto;
 import com.sparta.codesourcecommunity.member.dto.EmailCheckDto;
 import com.sparta.codesourcecommunity.member.dto.MemberLoginRequestDto;
 import com.sparta.codesourcecommunity.member.dto.MemberRequestDto;
@@ -34,32 +34,32 @@ public class MemberController {
 
 
     @PostMapping("/signup")
-    public ResponseEntity<CommonResponseDto> signup(
+    public ResponseEntity<ExceptionDto> signup(
         @Valid @RequestBody MemberRequestDto memberRequestDto) {
         memberService.signup(memberRequestDto);
         return ResponseEntity.status(HttpStatus.CREATED.value())
-            .body(new CommonResponseDto("이메일 인증을 완료하세요.", HttpStatus.CREATED.value()));
+            .body(new ExceptionDto("이메일 인증을 완료하세요.", HttpStatus.CREATED.value()));
     }
 
     @PostMapping("/emailAuthCheck")
-    public ResponseEntity<CommonResponseDto> AuthCheck(
+    public ResponseEntity<ExceptionDto> AuthCheck(
         @Valid @RequestBody EmailCheckDto emailCheckDto) {
         if (emailService.CheckAuthNum(emailCheckDto.getEmail(), emailCheckDto.getAuthNum())) {
             memberService.signupComplete(emailCheckDto.getEmail());
             emailService.delete(emailCheckDto.getEmail());
             memberService.delete(emailCheckDto.getEmail());
             return ResponseEntity.ok()
-                .body(new CommonResponseDto("회원가입 완료", HttpStatus.OK.value()));
+                .body(new ExceptionDto("회원가입 완료", HttpStatus.OK.value()));
         } else {
             emailService.delete(emailCheckDto.getEmail());
             memberService.delete(emailCheckDto.getEmail());
             return ResponseEntity.badRequest()
-                .body(new CommonResponseDto("올바르지 않은 인증번호", HttpStatus.BAD_REQUEST.value()));
+                .body(new ExceptionDto("올바르지 않은 인증번호", HttpStatus.BAD_REQUEST.value()));
         }
     }
 
     @PostMapping("/login")
-    public ResponseEntity<CommonResponseDto> login(
+    public ResponseEntity<ExceptionDto> login(
         @Valid @RequestBody MemberLoginRequestDto memberLoginRequestDto,
         HttpServletResponse response) {
         memberService.login(memberLoginRequestDto);
@@ -69,7 +69,7 @@ public class MemberController {
             token);
         // cookie에 token 담기
         jwtUtil.addJwtToCookie(token, response);
-        return ResponseEntity.ok().body(new CommonResponseDto("로그인 성공", HttpStatus.OK.value()));
+        return ResponseEntity.ok().body(new ExceptionDto("로그인 성공", HttpStatus.OK.value()));
     }
 
     @GetMapping("/profile")
@@ -78,26 +78,26 @@ public class MemberController {
     }
 
     @PatchMapping("/nickname")
-    public ResponseEntity<CommonResponseDto> modifyNickname(
+    public ResponseEntity<ExceptionDto> modifyNickname(
         @AuthenticationPrincipal MemberDetailsImpl memberDetails,
         @Valid @RequestBody MemberRequestDto memberRequestDto) {
         memberService.modifyNickname(memberRequestDto, memberDetails.getMember());
-        return ResponseEntity.ok().body(new CommonResponseDto("닉네임 수정 성공", HttpStatus.OK.value()));
+        return ResponseEntity.ok().body(new ExceptionDto("닉네임 수정 성공", HttpStatus.OK.value()));
     }
 
     @PatchMapping("/password")
-    public ResponseEntity<CommonResponseDto> modifyPassword(
+    public ResponseEntity<ExceptionDto> modifyPassword(
         @AuthenticationPrincipal MemberDetailsImpl memberDetails,
         @Valid @RequestBody ModifyPasswordDto passwordDto) {
         memberService.modifyPassword(passwordDto, memberDetails.getMember());
-        return ResponseEntity.ok().body(new CommonResponseDto("비밀번호 수정 성공", HttpStatus.OK.value()));
+        return ResponseEntity.ok().body(new ExceptionDto("비밀번호 수정 성공", HttpStatus.OK.value()));
     }
 
     @PatchMapping("/introduce")
-    public ResponseEntity<CommonResponseDto> modifyIntroduce(
+    public ResponseEntity<ExceptionDto> modifyIntroduce(
         @AuthenticationPrincipal MemberDetailsImpl memberDetails,
         @Valid @RequestBody MemberRequestDto memberRequestDto) {
         memberService.modifyIntroduce(memberRequestDto, memberDetails.getMember());
-        return ResponseEntity.ok().body(new CommonResponseDto("자기소개 수정 성공", HttpStatus.OK.value()));
+        return ResponseEntity.ok().body(new ExceptionDto("자기소개 수정 성공", HttpStatus.OK.value()));
     }
 }

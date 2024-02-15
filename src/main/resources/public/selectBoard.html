@@ -18,6 +18,23 @@
     border-radius: 5px;
     margin: 5px;
   }
+  #boardDetail > * {
+    font-size: 2em; /* 글자 크기를 2배로 설정 */
+    width: 75%; /* 부모 요소의 너비의 50%를 차지하도록 설정 */
+    height: 200%; /* 높이를 2배로 설정 */
+  }
+
+  #titleInput,#subtitleInput,#comment {
+    font-size: 1.1em;
+    width: 100%; /* input 요소의 너비를 100%로 설정하여 부모 요소의 50%를 차지하도록 함 */
+    height: 50px; /* input 요소의 높이를 100px로 설정 */
+  }
+
+  #contentInput {
+    width: 100%; /* input 요소의 너비를 100%로 설정하여 부모 요소의 50%를 차지하도록 함 */
+    height: 100px; /* input 요소의 높이를 100px로 설정 */
+  }
+
 </style>
 <body>
 <header>
@@ -48,7 +65,7 @@
 <form id="commentForm">
   <div>
     <label for="comment">댓글 입력:</label>
-    <input type="text" id="comment" name="comment">
+    <textarea id="comment" name="comment"></textarea>
   </div>
   <button type="submit">댓글 생성</button>
 </form>
@@ -84,8 +101,8 @@
 
     // 수정하기 버튼 클릭 시 수정 가능한 필드로 변경
     $("#editButton").click(function() {
-      $("#title").replaceWith("<input type='text' id='titleInput' value='" + $("#title").text() + "'>");
-      $("#subtitle").replaceWith("<input type='text' id='subtitleInput' value='" + $("#subtitle").text() + "'>");
+      $("#title").replaceWith("<textarea id='titleInput'>" + $("#title").text() + "'>");
+      $("#subtitle").replaceWith("<textarea id='subtitleInput'>" + $("#subtitle").text() + "'>");
       $("#content").replaceWith("<textarea id='contentInput'>" + $("#content").text() + "</textarea>");
       $(this).hide(); // 수정 버튼 숨기기
       $("#updateButton").show(); // 업데이트 버튼 표시

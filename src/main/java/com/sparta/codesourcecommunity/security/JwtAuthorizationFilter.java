@@ -1,7 +1,7 @@
 package com.sparta.codesourcecommunity.security;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.sparta.codesourcecommunity.common.CommonResponseDto;
+import com.sparta.codesourcecommunity.exception.dto.ExceptionDto;
 import io.jsonwebtoken.Claims;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -56,11 +56,11 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
 
             } else {
                 // 인증정보가 존재하지 않을때
-                CommonResponseDto commonResponseDto = new CommonResponseDto("토큰이 유효하지 않습니다.",
+                ExceptionDto exceptionDto = new ExceptionDto("토큰이 유효하지 않습니다.",
                     HttpStatus.BAD_REQUEST.value());
                 response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
                 response.setContentType("application/json; charset=UTF-8");
-                response.getWriter().write(objectMapper.writeValueAsString(commonResponseDto));
+                response.getWriter().write(objectMapper.writeValueAsString(exceptionDto));
             }
         }
 

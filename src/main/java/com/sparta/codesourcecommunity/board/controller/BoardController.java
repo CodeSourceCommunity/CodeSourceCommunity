@@ -4,7 +4,7 @@ import com.sparta.codesourcecommunity.board.dto.BoardGetResponseDto;
 import com.sparta.codesourcecommunity.board.dto.BoardRequestDto;
 import com.sparta.codesourcecommunity.board.dto.BoardResponseDto;
 import com.sparta.codesourcecommunity.board.service.BoardService;
-import com.sparta.codesourcecommunity.common.CommonResponseDto;
+import com.sparta.codesourcecommunity.exception.dto.ExceptionDto;
 import com.sparta.codesourcecommunity.security.MemberDetailsImpl;
 import java.util.List;
 import org.springframework.http.HttpStatus;
@@ -57,11 +57,11 @@ public class BoardController {
     }
 
     @DeleteMapping("/{boardId}")
-    public ResponseEntity<CommonResponseDto> deleteBoard(@PathVariable Long boardId,
+    public ResponseEntity<ExceptionDto> deleteBoard(@PathVariable Long boardId,
         @AuthenticationPrincipal
         MemberDetailsImpl memberDetails) {
         boardService.deleteBoard(boardId, memberDetails);
         return ResponseEntity.ok()
-            .body(new CommonResponseDto("게시글이 삭제되었습니다.", HttpStatus.OK.value()));
+            .body(new ExceptionDto("게시글이 삭제되었습니다.", HttpStatus.OK.value()));
     }
 }

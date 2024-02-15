@@ -1,4 +1,4 @@
-package com.sparta.codesourcecommunity.common;
+package com.sparta.codesourcecommunity.exception.dto;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
@@ -13,7 +13,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 @JsonInclude(Include.NON_NULL) //null은 json으로 parsing 하지 않음!
-public class CommonResponseDto {
+public class ExceptionDto {
 
     private String msg;
     private Integer statusCode;
