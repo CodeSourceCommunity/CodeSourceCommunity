@@ -28,8 +28,8 @@ public class BoardService {
     public List<BoardGetResponseDto> getAllBoard() {
         List<Board> boardList = boardRepository.findAll();
         List<BoardGetResponseDto> boardResponseDtos = new ArrayList<>();
-        for (int i = 0; i < boardList.size(); i++) {
-            boardResponseDtos.add(new BoardGetResponseDto(boardList.get(i)));
+        for (Board board : boardList) {
+            boardResponseDtos.add(new BoardGetResponseDto(board));
         }
         return boardResponseDtos;
     }
@@ -59,8 +59,7 @@ public class BoardService {
         }
         board.update(updateBoard.getTitle(), updateBoard.getSubtitle(), updateBoard.getContents());
 
-        BoardResponseDto boardResponseDto = new BoardResponseDto(board);
-        return boardResponseDto;
+        return new BoardResponseDto(board);
     }
 
     @Transactional

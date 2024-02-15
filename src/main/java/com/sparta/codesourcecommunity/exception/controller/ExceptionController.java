@@ -1,19 +1,18 @@
 package com.sparta.codesourcecommunity.exception.controller;
 
 import com.sparta.codesourcecommunity.exception.DeletionNotAllowedException;
+import com.sparta.codesourcecommunity.exception.DuplicateMemberException;
 import com.sparta.codesourcecommunity.exception.NotFoundBoardException;
 import com.sparta.codesourcecommunity.exception.NotFoundCommentException;
-import com.sparta.codesourcecommunity.exception.NotFoundReCommentException;
-import com.sparta.codesourcecommunity.exception.UnmodifiableException;
-import com.sparta.codesourcecommunity.exception.dto.ExceptionDto;
-import com.sparta.codesourcecommunity.exception.DuplicateMemberException;
 import com.sparta.codesourcecommunity.exception.NotFoundMemberException;
+import com.sparta.codesourcecommunity.exception.NotFoundReCommentException;
 import com.sparta.codesourcecommunity.exception.NotMatchPasswordException;
 import com.sparta.codesourcecommunity.exception.PasswordMismatchException;
 import com.sparta.codesourcecommunity.exception.SamePasswordException;
+import com.sparta.codesourcecommunity.exception.UnmodifiableException;
+import com.sparta.codesourcecommunity.exception.dto.ExceptionDto;
 import java.util.stream.Collectors;
 import org.springframework.context.support.DefaultMessageSourceResolvable;
-import org.springframework.data.crossstore.ChangeSetPersister.NotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
