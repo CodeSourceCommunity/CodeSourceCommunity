@@ -1,4 +1,4 @@
-package com.sparta.codesourcecommunity.member.exception;
+package com.sparta.codesourcecommunity.exception;
 
 public class SamePasswordException extends IllegalArgumentException {
 

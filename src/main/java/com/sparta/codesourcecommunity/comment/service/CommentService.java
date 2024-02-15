@@ -6,7 +6,10 @@ import com.sparta.codesourcecommunity.comment.dto.CommentRequestDto;
 import com.sparta.codesourcecommunity.comment.dto.CommentResponseDto;
 import com.sparta.codesourcecommunity.comment.entity.Comment;
 import com.sparta.codesourcecommunity.comment.repository.CommentRepository;
-import com.sparta.codesourcecommunity.common.CommonResponseDto;
+import com.sparta.codesourcecommunity.exception.NotFoundBoardException;
+import com.sparta.codesourcecommunity.exception.NotFoundMemberException;
+import com.sparta.codesourcecommunity.exception.UnmodifiableException;
+import com.sparta.codesourcecommunity.exception.dto.ExceptionDto;
 import com.sparta.codesourcecommunity.member.entity.Member;
 import com.sparta.codesourcecommunity.member.repository.MemberRepository;
 import com.sparta.codesourcecommunity.security.MemberDetailsImpl;
@@ -27,8 +30,9 @@ public class CommentService {
     public CommentResponseDto createComment(Long boardId, CommentRequestDto commentRequestDto,
         MemberDetailsImpl memberDetails) {
         Member member = memberRepository.findById(memberDetails.getMember().getMemberId())
-            .orElseThrow();
-        Board board = boardRepository.findById(boardId).orElseThrow();
+            .orElseThrow(NotFoundMemberException::new);
+        Board board = boardRepository.findById(boardId)
+            .orElseThrow(NotFoundBoardException::new);
         Comment saveComment = new Comment(commentRequestDto.getComment(), member, board);
         commentRepository.save(saveComment);
 
@@ -42,7 +46,7 @@ public class CommentService {
 
         for (Comment comment : commentList) {
             Member member = memberRepository.findById(comment.getMember().getMemberId())
-                .orElseThrow();
+                .orElseThrow(NotFoundMemberException::new);
             commentResponseDtos.add(new CommentResponseDto(comment, member.getNickname()));
         }
 
@@ -55,7 +59,7 @@ public class CommentService {
         Comment comment = commentRepository.findById(commentId).orElseThrow();
 
         if (!(comment.getMember().getMemberId() == memberDetails.getMember().getMemberId())) {
-            throw new IllegalArgumentException();
+            throw new UnmodifiableException();
         }
 
         comment.update(commentRequestDto);
@@ -64,16 +68,16 @@ public class CommentService {
 
     }
 
-    public CommonResponseDto deleteComment(Long commentId, MemberDetailsImpl memberDetails) {
+    public ExceptionDto deleteComment(Long commentId, MemberDetailsImpl memberDetails) {
         Comment comment = commentRepository.findById(commentId).orElseThrow();
 
         if (!(comment.getMember().getMemberId() == memberDetails.getMember().getMemberId())) {
-            throw new IllegalArgumentException();
+            throw new UnmodifiableException();
         }
 
         commentRepository.delete(comment);
 
         String message = "삭제가 정상적으로 처리되었습니다.";
-        return new CommonResponseDto(message, 200);
+        return new ExceptionDto(message, 200);
     }
 }

@@ -1,4 +1,4 @@
-package com.sparta.codesourcecommunity.member.config;
+package com.sparta.codesourcecommunity.config;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sparta.codesourcecommunity.security.JwtAuthorizationFilter;

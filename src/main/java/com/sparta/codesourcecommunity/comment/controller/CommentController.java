@@ -3,7 +3,7 @@ package com.sparta.codesourcecommunity.comment.controller;
 import com.sparta.codesourcecommunity.comment.dto.CommentRequestDto;
 import com.sparta.codesourcecommunity.comment.dto.CommentResponseDto;
 import com.sparta.codesourcecommunity.comment.service.CommentService;
-import com.sparta.codesourcecommunity.common.CommonResponseDto;
+import com.sparta.codesourcecommunity.exception.dto.ExceptionDto;
 import com.sparta.codesourcecommunity.security.MemberDetailsImpl;
 import jakarta.validation.Valid;
 import java.util.List;
@@ -50,7 +50,7 @@ public class CommentController {
     }
 
     @DeleteMapping("/{commentId}")
-    public CommonResponseDto deleteComment(
+    public ExceptionDto deleteComment(
         @PathVariable Long commentId,
         @AuthenticationPrincipal MemberDetailsImpl memberDetails) {
 

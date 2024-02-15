@@ -2,7 +2,12 @@ package com.sparta.codesourcecommunity.recomment.service;
 
 import com.sparta.codesourcecommunity.comment.entity.Comment;
 import com.sparta.codesourcecommunity.comment.repository.CommentRepository;
-import com.sparta.codesourcecommunity.common.CommonResponseDto;
+import com.sparta.codesourcecommunity.exception.DeletionNotAllowedException;
+import com.sparta.codesourcecommunity.exception.NotFoundCommentException;
+import com.sparta.codesourcecommunity.exception.NotFoundMemberException;
+import com.sparta.codesourcecommunity.exception.NotFoundReCommentException;
+import com.sparta.codesourcecommunity.exception.UnmodifiableException;
+import com.sparta.codesourcecommunity.exception.dto.ExceptionDto;
 import com.sparta.codesourcecommunity.member.entity.Member;
 import com.sparta.codesourcecommunity.member.repository.MemberRepository;
 import com.sparta.codesourcecommunity.recomment.dto.ReCommentRequestDto;
@@ -25,8 +30,10 @@ public class ReCommentService {
     private final ReCommentRepository reCommentRepository;
 
     public ReCommentResponseDto createReComment(Long commentId, ReCommentRequestDto reCommentRequestDto, MemberDetailsImpl memberDetails) {
-        Member member = memberRepository.findById(memberDetails.getMember().getMemberId()).orElseThrow();
-        Comment comment = commentRepository.findById(commentId).orElseThrow();
+        Member member = memberRepository.findById(memberDetails.getMember().getMemberId())
+            .orElseThrow(NotFoundMemberException::new);
+        Comment comment = commentRepository.findById(commentId)
+            .orElseThrow(NotFoundCommentException::new);
         ReComment saveReComment = new ReComment(reCommentRequestDto.getReComment(), member, comment);
 
         reCommentRepository.save(saveReComment);
@@ -47,10 +54,11 @@ public class ReCommentService {
 
     @Transactional
     public ReCommentResponseDto updateReComment(Long recommentId, ReCommentRequestDto reCommentRequestDto, MemberDetailsImpl memberDetails) {
-        ReComment reComment = reCommentRepository.findById(recommentId).orElseThrow();
+        ReComment reComment = reCommentRepository.findById(recommentId)
+            .orElseThrow(NotFoundReCommentException::new);
 
         if (!(reComment.getMember().getMemberId() == memberDetails.getMember().getMemberId())){
-            throw new IllegalArgumentException();
+            throw new UnmodifiableException();
         }
 
         reComment.update(reCommentRequestDto);
@@ -58,17 +66,18 @@ public class ReCommentService {
         return new ReCommentResponseDto(reComment);
     }
 
-    public CommonResponseDto deleteComment(Long recommentId, MemberDetailsImpl memberDetails) {
-        ReComment reComment = reCommentRepository.findById(recommentId).orElseThrow();
+    public ExceptionDto deleteComment(Long recommentId, MemberDetailsImpl memberDetails) {
+        ReComment reComment = reCommentRepository.findById(recommentId)
+            .orElseThrow(NotFoundReCommentException::new);
 
         if (!(reComment.getMember().getMemberId() == memberDetails.getMember().getMemberId())){
-            throw new IllegalArgumentException();
+            throw new DeletionNotAllowedException();
         }
 
         reCommentRepository.delete(reComment);
         String message = "삭제가 정상적으로 처리되었습니다.";
 
-        return new CommonResponseDto(message, 200);
+        return new ExceptionDto(message, 200);
 
     }
 }
